@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HAFIZ MOTORS - Showroom ERP</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif}
+:root{--p:#0b4da2;--pd:#083a7d;--bg:#eef2f7;--w:#fff;--b:#d9e2ec;--t:#334e68;--g:#27ae60;--r:#e74c3c;--o:#e67e22}
+body{background:var(--bg);color:var(--t)}
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0b4da2,#062a5e);padding:20px}
+.login-box{background:#fff;width:400px;max-width:100%;border-radius:12px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.login-head{background:var(--p);color:#fff;text-align:center;padding:25px}
+.login-head h1{font-size:28px;letter-spacing:1px}.login-head p{font-size:13px;opacity:.9}
+.login-body{padding:25px}.login-body label{font-size:13px;font-weight:600}
+.login-body input,.login-body select{width:100%;padding:10px;margin:6px 0 14px;border:1px solid var(--b);border-radius:6px}
+#app{display:flex;min-height:100vh}
+aside{width:235px;background:var(--pd);color:#fff;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{padding:18px;text-align:center;background:#062a5e;border-bottom:1px solid rgba(255,255,255,.1)}
+.brand .logo{width:55px;height:55px;background:#fff;color:var(--p);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;margin:0 auto 8px;overflow:hidden}
+.brand .logo img{width:100%;height:100%;object-fit:cover}
+.brand h2{font-size:18px}.brand small{font-size:11px;opacity:.8}
+nav{padding:10px}
+nav button{width:100%;text-align:left;background:transparent;border:0;color:#dbe7ff;padding:11px 12px;border-radius:7px;cursor:pointer;font-size:14px;margin-bottom:3px;display:flex;gap:8px;align-items:center}
+nav button:hover,nav button.active{background:#fff;color:var(--pd);font-weight:700}
+main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--b);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.topbar h2{color:var(--p);font-size:20px}
+.userbox{font-size:13px;display:flex;gap:10px;align-items:center}
+.content{padding:18px}
+.mod{display:none}.mod.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.card{background:#fff;border-radius:10px;padding:14px;border-top:4px solid var(--p);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.card h4{font-size:12px;color:#62748a;text-transform:uppercase}.card .v{font-size:20px;font-weight:800;color:var(--pd);margin-top:5px}
+.card.green{border-color:var(--g)}.card.red{border-color:var(--r)}.card.orange{border-color:var(--o)}
+.panel{background:#fff;border-radius:10px;padding:16px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.panel h3{color:var(--p);margin-bottom:12px;border-bottom:2px solid var(--bg);padding-bottom:8px;font-size:16px}
+.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.form-grid input,.form-grid select,.form-grid textarea{padding:8px;border:1px solid var(--b);border-radius:6px;font-size:13px;width:100%}
+.form-grid label{font-size:11px;font-weight:700;color:#486581;grid-column:span 4;margin-top:6px;text-transform:uppercase;background:#f0f4f8;padding:5px 8px;border-radius:4px}
+.chk{grid-column:span 4;display:flex;gap:8px;align-items:center;font-size:13px;font-weight:600;background:#fff8e1;padding:8px;border-radius:6px;border:1px dashed var(--o)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.btn{padding:9px 16px;border:0;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px}
+.btn-p{background:var(--p);color:#fff}.btn-p:hover{background:var(--pd)}
+.btn-g{background:var(--g);color:#fff}.btn-r{background:var(--r);color:#fff}.btn-o{background:var(--o);color:#fff}.btn-d{background:#62748a;color:#fff}.btn-w{background:#fff;border:1px solid var(--b);color:var(--t)}
+.searchbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.searchbar input,.searchbar select{padding:8px;border:1px solid var(--b);border-radius:6px;font-size:13px;flex:1;min-width:150px}
+.tblwrap{overflow:auto;max-height:500px;border:1px solid var(--b);border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+th{background:var(--p);color:#fff;padding:9px;position:sticky;top:0;white-space:nowrap}
+td{padding:7px;border-bottom:1px solid #eee;white-space:nowrap}
+tr:nth-child(even){background:#f8fafc}
+.act{ display:flex;gap:4px}
+.mini{padding:4px 8px;font-size:11px;border-radius:4px;border:0;cursor:pointer;font-weight:700}
+.e{background:#3498db;color:#fff}.d{background:var(--r);color:#fff}.pr{background:#2c3e50;color:#fff}.vi{background:var(--g);color:#fff}
+#toast{position:fixed;bottom:20px;right:20px;background:#102a43;color:#fff;padding:12px 18px;border-radius:8px;display:none;z-index:9999;max-width:350px}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;padding:20px}
+#modal-box{background:#fff;width:900px;max-width:100%;max-height:90vh;overflow:auto;border-radius:10px;padding:20px}
+#print-root{display:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.form-grid{grid-template-columns:1fr 1fr}#app{flex-direction:column}aside{width:100%;height:auto;position:static}nav{display:grid;grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+/* RECEIPT */
+.r-doc{font-family:Arial,sans-serif;color:#000;background:#fff;padding:10px}
+.r-head{text-align:center;border:3px double #0b4da2;padding:12px;margin-bottom:10px}
+.r-head h1{color:#0b4da2;font-size:28px;letter-spacing:2px;margin:0}
+.r-head p{margin:2px;font-size:12px}
+.r-title{background:#0b4da2;color:#fff;text-align:center;padding:8px;font-weight:900;letter-spacing:2px;margin:10px 0;font-size:16px}
+.r-sec{border:1px solid #000;margin-bottom:8px}
+.r-sec h4{background:#e3ecf7;margin:0;padding:6px 10px;font-size:13px;border-bottom:1px solid #000;color:#0b4da2}
+.r-table{width:100%;border-collapse:collapse;font-size:12px}
+.r-table td,.r-table th{border:1px solid #999;padding:5px 7px;color:#000;background:#fff;position:static;white-space:normal}
+.r-table th{background:#f0f0f0}
+.r-sign{display:flex;justify-content:space-between;margin-top:25px;font-size:12px;text-align:center;gap:10px}
+.r-sign div{flex:1;border-top:1px solid #000;padding-top:5px;margin-top:30px}
+.r-foot{text-align:center;font-size:11px;margin-top:10px;border-top:2px solid #0b4da2;padding-top:6px}
+.thermal{width:80mm;font-size:11px}
+@media print{
+body{background:#fff}
+body>*{display:none!important}
+#print-root{display:block!important;position:absolute;left:0;top:0;width:100%}
+#print-root *{visibility:visible}
+#print-area{display:block!important}
+.no-print{display:none!important}
+@page{size:A4;margin:8mm}
+}
+</style>
+</head>
+<body>
+<div id="login-screen">
+<div class="login-box"><div class="login-head"><h1>HAFIZ MOTORS</h1><p>Showroom Management ERP - Offline Secure</p></div>
+<div class="login-body">
+<label>Username</label><input id="lg_user" value="admin">
+<label>Password</label><input id="lg_pass" type="password" value="admin123">
+<button class="btn btn-p" style="width:100%" onclick="login()">LOGIN</button>
+<p style="font-size:11px;margin-top:10px;color:#62748a">Default: admin/admin123 | manager/manager123 | data/data123 | reports/reports123<br>100% Offline - IndexedDB Permanent Storage</p>
+</div></div></div>
+
+<div id="app" style="display:none">
+<aside><div class="brand"><div class="logo" id="sideLogo">HM</div><h2 id="sideCo">HAFIZ MOTORS</h2><small>Showroom ERP System</small></div>
+<nav id="nav"></nav></aside>
+<main><div class="topbar"><h2 id="pageTitle">Dashboard</h2><div class="userbox"><span id="userInfo"></span><span id="backupInfo" style="color:#62748a"></span><button class="btn btn-r" onclick="logout()">Logout</button></div></div>
+<div class="content">
+
+<!-- DASHBOARD -->
+<div id="mod-dashboard" class="mod active"><div class="cards" id="dashCards"></div>
+<div class="two"><div class="panel"><h3>Recent Purchases</h3><div class="tblwrap"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Reg No</th><th>Price</th></tr></thead><tbody id="dashPur"></tbody></table></div></div>
+<div class="panel"><h3>Recent Sales</h3><div class="tblwrap"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Reg No</th><th>Price</th></tr></thead><tbody id="dashSale"></tbody></table></div></div></div>
+<div class="panel"><h3>Financial Summary</h3><div id="finSum"></div></div></div>
+
+<!-- VENDORS -->
+<div id="mod-vendors" class="mod"><div class="panel"><h3>Vendor Registration</h3>
+<div class="form-grid">
+<label>Vendor Information</label>
+<input id="v_name" placeholder="Vendor Name *"><input id="v_fname" placeholder="Father Name"><input id="v_cnic" placeholder="CNIC e.g 35202-1234567-1"><input id="v_contact" placeholder="Contact Number *">
+<input id="v_address" placeholder="Address"><input id="v_city" placeholder="City"><input id="v_prov" placeholder="Province"><input id="v_care" placeholder="Care Of / Referred By">
+<input id="v_date" type="date"><input type="hidden" id="v_id">
+<div class="chk"><input type="checkbox" id="v_both"> Register as Both Vendor and Customer (auto-link)</div>
+</div><div class="btnrow"><button class="btn btn-p" onclick="saveVendor()">Save Vendor</button><button class="btn btn-d" onclick="resetVendor()">Reset</button><button class="btn btn-g" onclick="printVendorList()">Print Vendor List</button></div></div>
+<div class="panel"><h3>Vendor List (<span id="vCount">0</span>)</h3><div class="searchbar"><input id="v_search" placeholder="Search by Name / CNIC / Contact" oninput="renderVendors()"></div>
+<div class="tblwrap"><table><thead><tr><th>Name</th><th>Father</th><th>CNIC</th><th>Contact</th><th>City</th><th>Date</th><th>Actions</th></tr></thead><tbody id="vendorTable"></tbody></table></div><div id="vendorHist"></div></div></div>
+
+<!-- CUSTOMERS -->
+<div id="mod-customers" class="mod"><div class="panel"><h3>Customer Registration</h3>
+<div class="form-grid"><label>Customer Information</label>
+<input id="c_name" placeholder="Customer Name *"><input id="c_fname" placeholder="Father Name"><input id="c_cnic" placeholder="CNIC"><input id="c_contact" placeholder="Contact Number *">
+<input id="c_address" placeholder="Complete Address"><input id="c_city" placeholder="City"><input id="c_prov" placeholder="Province"><input id="c_care" placeholder="Care Of / Referred By">
+<input id="c_date" type="date"><input type="hidden" id="c_id">
+<div class="chk"><input type="checkbox" id="c_both"> Register as Both Vendor and Customer (auto-link)</div>
+</div><div class="btnrow"><button class="btn btn-p" onclick="saveCustomer()">Save Customer</button><button class="btn btn-d" onclick="resetCustomer()">Reset</button><button class="btn btn-g" onclick="printCustomerList()">Print Customer List</button></div></div>
+<div class="panel"><h3>Customer List (<span id="cCount">0</span>)</h3><div class="searchbar"><input id="c_search" placeholder="Search Name / CNIC / Contact" oninput="renderCustomers()"></div>
+<div class="tblwrap"><table><thead><tr><th>Name</th><th>Father</th><th>CNIC</th><th>Contact</th><th>City</th><th>Date</th><th>Actions</th></tr></thead><tbody id="customerTable"></tbody></table></div><div id="custHist"></div></div></div>
+
+<!-- PURCHASE -->
+<div id="mod-purchase" class="mod"><div class="panel"><h3>Purchase / Vehicle Registration</h3>
+<div class="form-grid">
+<label>Vehicle Details</label>
+<input id="p_make" placeholder="Make / Company e.g Toyota"><input id="p_name" placeholder="Vehicle Name e.g Corolla *"><input id="p_model" placeholder="Model e.g GLI"><input id="p_year" placeholder="Model Year e.g 2021">
+<input id="p_reg" placeholder="Registration Number *"><input id="p_chassis" placeholder="Chassis Number * Unique"><input id="p_engine" placeholder="Engine Number"><input id="p_color" placeholder="Color">
+<input id="p_variant" placeholder="Variant"><select id="p_trans"><option value="">Transmission</option><option>Automatic</option><option>Manual</option><option>CVT</option><option>DCT</option><option>e-CVT</option></select>
+<select id="p_drive"><option value="">Drive Type</option><option>FWD</option><option>RWD</option><option>AWD</option><option>2WD</option><option>4WD</option></select>
+<select id="p_vehicleType" onchange="toggleJapaneseGrade('p')"><option value="">Vehicle Type</option><option>Train Drive</option><option>Japanese</option></select>
+<div id="p_grade_wrap" style="display:none"><select id="p_grade"><option value="">Auction Grade</option><option>3</option><option>3.5</option><option>4</option><option>4.5</option><option>5</option></select></div>
+<select id="p_fuel"><option value="">Fuel Type</option><option>Petrol</option><option>Diesel</option><option>Hybrid</option><option>Electric</option><option>CNG</option><option>LPG</option></select>
+<select id="p_cat"><option value="">Category</option><option>Sedan</option><option>Hatchback</option><option>SUV</option><option>Crossover</option><option>Hybrid</option><option>Electric Vehicle</option></select>
+<label>Seller / Vendor Details</label>
+<select id="p_vendorSel" onchange="fillPVendor()"><option value="">-- Select Registered Vendor --</option></select>
+<input id="p_vname" placeholder="Vendor Name *"><input id="p_vfname" placeholder="Father Name"><input id="p_vcnic" placeholder="CNIC"><input id="p_vcontact" placeholder="Contact">
+<input id="p_vaddr" placeholder="Address"><input id="p_vcity" placeholder="City"><input id="p_vprov" placeholder="Province"><input id="p_vcare" placeholder="Care Of">
+<label>Purchase Financials</label>
+<input id="p_date" type="date"><input id="p_price" type="number" placeholder="Purchase Price *" oninput="calcP()"><input id="p_add" type="number" placeholder="Additional Charges" value="0" oninput="calcP()"><input id="p_total" type="number" placeholder="Total Cost" readonly>
+<select id="p_method"><option>Cash</option><option>Bank Transfer</option><option>Easypaisa</option><option>Cheque</option><option>Other</option></select>
+<select id="p_bank"></select><input id="p_paid" type="number" placeholder="Paid Amount" value="0" oninput="calcP()"><input id="p_rem" type="number" placeholder="Remaining" readonly>
+<input id="p_remarks" placeholder="Remarks"><input type="hidden" id="p_id">
+</div><div class="btnrow"><button class="btn btn-p" onclick="savePurchase()">Save Purchase</button><button class="btn btn-d" onclick="resetPurchase()">Reset</button></div></div>
+<div class="panel"><h3>Purchase Records</h3><div class="searchbar"><input id="p_search" placeholder="Search Chassis / Reg / Engine / Name" oninput="renderPurchases()"><select id="p_fvendor" onchange="renderPurchases()"><option value="">All Vendors</option></select><input type="date" id="p_f1" onchange="renderPurchases()"><input type="date" id="p_f2" onchange="renderPurchases()"></div>
+<div class="tblwrap"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Reg</th><th>Chassis</th><th>Vendor</th><th>Vehicle Type</th><th>Grade</th><th>Total</th><th>Paid</th><th>Rem</th><th>Status</th><th>Actions</th></tr></thead><tbody id="purchaseTable"></tbody></table></div></div></div>
+
+<!-- SALES -->
+<div id="mod-sales" class="mod"><div class="panel"><h3>Sale Registration</h3>
+<div class="form-grid"><label>Select Vehicle (Available Stock Only)</label>
+<select id="s_vehicle" onchange="fillSVehicle()" style="grid-column:span 4"><option value="">-- Select Available Vehicle --</option></select>
+<input id="s_make" placeholder="Make" readonly><input id="s_name" placeholder="Vehicle Name" readonly><input id="s_model" placeholder="Model" readonly><input id="s_year" placeholder="Year" readonly>
+<input id="s_reg" placeholder="Reg No" readonly><input id="s_chassis" placeholder="Chassis" readonly><input id="s_engine" placeholder="Engine" readonly><input id="s_color" placeholder="Color" readonly>
+<input id="s_variant" placeholder="Variant" readonly><input id="s_trans" placeholder="Transmission" readonly><input id="s_drive" placeholder="Drive" readonly><input id="s_fuel" placeholder="Fuel" readonly>
+<input id="s_vehicleType" placeholder="Vehicle Type" readonly><input id="s_grade" placeholder="Auction Grade" readonly>
+<label>Buyer / Customer Details</label>
+<select id="s_custSel" onchange="fillSCust()" style="grid-column:span 4"><option value="">-- Select Registered Customer --</option></select>
+<input id="s_cname" placeholder="Customer Name *"><input id="s_cfname" placeholder="Father Name"><input id="s_ccnic" placeholder="CNIC"><input id="s_ccontact" placeholder="Contact *">
+<input id="s_caddr" placeholder="Complete Address"><input id="s_ccity" placeholder="City"><input id="s_cprov" placeholder="Province"><input id="s_ccare" placeholder="Care Of / Referred By">
+<label>Sale Financials</label>
+<input id="s_date" type="date"><input id="s_price" type="number" placeholder="Sale Price *" oninput="calcS()"><select id="s_method"><option>Cash</option><option>Bank Transfer</option><option>Easypaisa</option><option>Cheque</option><option>Other</option></select><select id="s_bank"></select>
+<input id="s_recv" type="number" placeholder="Received Amount" value="0" oninput="calcS()"><input id="s_rem" type="number" placeholder="Remaining" readonly><input id="s_remarks" placeholder="Remarks"><input type="hidden" id="s_id"><input type="hidden" id="s_purId">
+</div><div class="btnrow"><button class="btn btn-p" onclick="saveSale()">Save Sale</button><button class="btn btn-d" onclick="resetSale()">Reset</button></div></div>
+<div class="panel"><h3>Sales Records</h3><div class="searchbar"><input id="s_search" placeholder="Search Chassis / Reg / Engine / Customer" oninput="renderSales()"><input type="date" id="s_f1" onchange="renderSales()"><input type="date" id="s_f2" onchange="renderSales()"></div>
+<div class="tblwrap"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Reg</th><th>Chassis</th><th>Buyer</th><th>Vehicle Type</th><th>Grade</th><th>Price</th><th>Recv</th><th>Rem</th><th>Actions</th></tr></thead><tbody id="salesTable"></tbody></table></div></div></div>
+
+<!-- STOCK -->
+<div id="mod-stock" class="mod"><div class="panel"><h3>Stock Summary</h3><div class="cards" id="stockCards"></div>
+<div class="searchbar"><select id="st_filter" onchange="renderStock()"><option value="">All Status</option><option>Available</option><option>Sold</option><option>Reserved</option></select><input id="st_search" placeholder="Search vehicle / reg / chassis" oninput="renderStock()"><button class="btn btn-g" onclick="printStock()">Print Stock</button></div>
+<div class="tblwrap"><table><thead><tr><th>Vehicle</th><th>Model</th><th>Reg</th><th>Chassis</th><th>Engine</th><th>Color</th><th>Vehicle Type</th><th>Grade</th><th>P.Date</th><th>Price</th><th>Vendor</th><th>Status</th><th>Action</th></tr></thead><tbody id="stockTable"></tbody></table></div></div></div>
+
+<!-- VOUCHERS -->
+<div id="mod-vouchers" class="mod"><div class="panel"><h3>Payment / Receipt Voucher</h3>
+<div class="form-grid"><input id="vc_no" placeholder="Voucher No (Auto)"><input id="vc_date" type="date"><input id="vc_party" placeholder="Party Name *"><input id="vc_cnic" placeholder="CNIC / Contact">
+<select id="vc_type"><option>Payment Voucher</option><option>Receipt Voucher</option><option>Adjustment Voucher</option></select><select id="vc_method"><option>Cash</option><option>Bank Transfer</option><option>Easypaisa</option><option>Cheque</option><option>Other</option></select>
+<select id="vc_bank"></select><input id="vc_amt" type="number" placeholder="Amount *"><input id="vc_ref" placeholder="Reference No"><input id="vc_desc" placeholder="Description" style="grid-column:span 3"><input type="hidden" id="vc_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveVoucher()">Save Voucher</button><button class="btn btn-d" onclick="resetVoucher()">Reset</button></div></div>
+<div class="panel"><h3>Voucher List</h3><div class="searchbar"><input id="vc_search" placeholder="Search party / voucher no" oninput="renderVouchers()"><select id="vc_ftype" onchange="renderVouchers()"><option value="">All Types</option><option>Payment Voucher</option><option>Receipt Voucher</option><option>Adjustment Voucher</option></select><input type="date" id="vc_f1" onchange="renderVouchers()"><input type="date" id="vc_f2" onchange="renderVouchers()"></div>
+<div class="tblwrap"><table><thead><tr><th>No</th><th>Date</th><th>Party</th><th>Type</th><th>Method</th><th>Amount</th><th>Desc</th><th>Actions</th></tr></thead><tbody id="voucherTable"></tbody></table></div></div></div>
+
+<!-- EXPENSES -->
+<div id="mod-expenses" class="mod"><div class="panel"><h3>Expense Entry</h3>
+<div class="form-grid"><input id="ex_date" type="date"><select id="ex_cat"><option>Vehicle Repair</option><option>Fuel</option><option>Commission</option><option>Office Expense</option><option>Employee Expense</option><option>Documentation</option><option>Transportation</option><option>Other</option></select>
+<input id="ex_desc" placeholder="Description *"><input id="ex_reg" placeholder="Vehicle Reg No (optional)"><input id="ex_chas" placeholder="Chassis No (optional)"><input id="ex_amt" type="number" placeholder="Amount *">
+<select id="ex_method"><option>Cash</option><option>Bank Transfer</option><option>Easypaisa</option><option>Cheque</option><option>Other</option></select><input id="ex_vno" placeholder="Voucher No"><input id="ex_rem" placeholder="Remarks"><input type="hidden" id="ex_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveExpense()">Save Expense</button><button class="btn btn-d" onclick="resetExpense()">Reset</button></div></div>
+<div class="panel"><h3>Expense List</h3><div class="searchbar"><input id="ex_search" placeholder="Search desc / reg / chassis" oninput="renderExpenses()"><select id="ex_fcat" onchange="renderExpenses()"><option value="">All Categories</option><option>Vehicle Repair</option><option>Fuel</option><option>Commission</option><option>Office Expense</option><option>Employee Expense</option><option>Documentation</option><option>Transportation</option><option>Other</option></select></div>
+<div class="tblwrap"><table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Vehicle</th><th>Amount</th><th>Method</th><th>Actions</th></tr></thead><tbody id="expenseTable"></tbody></table></div></div></div>
+
+<!-- EMPLOYEES -->
+<div id="mod-employees" class="mod"><div class="panel"><h3>Employee Registration</h3>
+<div class="form-grid"><input id="e_name" placeholder="Employee Name *"><input id="e_fname" placeholder="Father Name"><input id="e_cnic" placeholder="CNIC"><input id="e_contact" placeholder="Contact">
+<input id="e_addr" placeholder="Address"><input id="e_join" type="date"><input id="e_desig" placeholder="Designation"><input id="e_salary" type="number" placeholder="Monthly Salary *">
+<select id="e_status"><option>Active</option><option>Inactive</option><option>Paid</option><option>Unpaid</option></select><input type="hidden" id="e_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveEmployee()">Save Employee</button><button class="btn btn-d" onclick="resetEmployee()">Reset</button></div></div>
+<div class="panel"><h3>Employee List</h3><div class="searchbar"><input id="e_search" placeholder="Search employee" oninput="renderEmployees()"><button class="btn btn-g" onclick="printEmpList()">Print List</button></div>
+<div class="tblwrap"><table><thead><tr><th>Name</th><th>Contact</th><th>Designation</th><th>Salary</th><th>Advance Due</th><th>Status</th><th>Actions</th></tr></thead><tbody id="empTable"></tbody></table></div></div>
+<div class="panel"><h3>Salary & Advance Management</h3>
+<div class="form-grid"><select id="sl_emp" onchange="fillSalEmp()" style="grid-column:span 2"><option value="">-- Select Employee --</option></select><input id="sl_month" type="month"><input id="sl_msalary" type="number" placeholder="Monthly Salary" readonly>
+<input id="sl_total" type="number" placeholder="Total Salary" oninput="calcSal()"><input id="sl_taken" type="number" placeholder="Advance Taken" value="0" oninput="calcSal()"><input id="sl_ret" type="number" placeholder="Advance Returned" value="0" oninput="calcSal()"><input id="sl_prev" type="number" placeholder="Prev Outstanding" readonly>
+<input id="sl_remAdv" type="number" placeholder="Remaining Advance" readonly><input id="sl_paid" type="number" placeholder="Salary Paid" value="0" oninput="calcSal()"><input id="sl_remSal" type="number" placeholder="Remaining Salary" readonly><input id="sl_date" type="date"><input type="hidden" id="sl_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveSalary()">Save Salary / Advance</button><button class="btn btn-d" onclick="resetSalary()">Reset</button></div>
+<div class="tblwrap"><table><thead><tr><th>Month</th><th>Employee</th><th>Total</th><th>Adv Taken</th><th>Adv Ret</th><th>Rem Adv</th><th>Paid</th><th>Rem Sal</th><th>Actions</th></tr></thead><tbody id="salTable"></tbody></table></div></div></div>
+
+<!-- BANKING -->
+<div id="mod-banking" class="mod"><div class="panel"><h3>Bank Accounts (Total: <span id="bankTotal">0</span>)</h3>
+<div class="form-grid"><input id="b_name" placeholder="Bank Name * e.g Meezan"><input id="b_title" placeholder="Account Title *"><input id="b_no" placeholder="Account Number *"><input id="b_iban" placeholder="IBAN">
+<input id="b_branch" placeholder="Branch Name"><input id="b_open" type="number" placeholder="Opening Balance" value="0"><input type="hidden" id="b_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveBank()">Save Bank</button><button class="btn btn-d" onclick="resetBank()">Reset</button></div>
+<div class="tblwrap"><table><thead><tr><th>Bank</th><th>Title</th><th>Account No</th><th>Branch</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="bankTable"></tbody></table></div></div>
+<div class="panel"><h3>Bank Transaction</h3>
+<div class="form-grid"><input id="bt_date" type="date"><select id="bt_bank"></select><select id="bt_type"><option>Deposit</option><option>Withdrawal</option><option>Bank Transfer</option><option>Cheque Received</option><option>Cheque Issued</option><option>Bank Charges</option></select>
+<input id="bt_ref" placeholder="Reference No"><input id="bt_desc" placeholder="Description"><input id="bt_debit" type="number" placeholder="Debit" value="0"><input id="bt_credit" type="number" placeholder="Credit" value="0"><input type="hidden" id="bt_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveBankTx()">Save Transaction</button><button class="btn btn-d" onclick="resetBankTx()">Reset</button></div>
+<div class="searchbar"><select id="bt_fbank" onchange="renderBankTx()"><option value="">All Banks</option></select><input type="date" id="bt_f1" onchange="renderBankTx()"><input type="date" id="bt_f2" onchange="renderBankTx()"><button class="btn btn-g" onclick="printBankStmt()">Print Statement</button></div>
+<div class="tblwrap"><table><thead><tr><th>Date</th><th>Bank</th><th>Type</th><th>Ref</th><th>Desc</th><th>Debit</th><th>Credit</th><th>Balance</th><th>Action</th></tr></thead><tbody id="bankTxTable"></tbody></table></div></div></div>
+
+<!-- FILES -->
+<div id="mod-files" class="mod"><div class="panel"><h3>Vehicle File Record</h3>
+<div class="form-grid"><input id="f_no" placeholder="File Number *"><input id="f_vname" placeholder="Vehicle Name"><input id="f_reg" placeholder="Registration Number"><input id="f_chas" placeholder="Chassis Number">
+<input id="f_eng" placeholder="Engine Number"><input id="f_from" placeholder="File Received From"><input id="f_rparty" placeholder="Received Party"><input id="f_rdate" type="date">
+<input id="f_given" placeholder="File Given To"><input id="f_gparty" placeholder="Receiving Party"><input id="f_gdate" type="date"><input id="f_loc" placeholder="File Location">
+<select id="f_status"><option>In Office</option><option>Given to Customer</option><option>Given to Vendor</option><option>Sent to Bank</option><option>Under Process</option><option>Returned</option></select><input id="f_rem" placeholder="Remarks"><input type="hidden" id="f_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveFile()">Save File Record</button><button class="btn btn-d" onclick="resetFile()">Reset</button></div></div>
+<div class="panel"><h3>File Records</h3><div class="searchbar"><input id="f_search" placeholder="Search file no / reg / chassis" oninput="renderFiles()"></div>
+<div class="tblwrap"><table><thead><tr><th>File No</th><th>Vehicle</th><th>Reg</th><th>Chassis</th><th>From</th><th>To</th><th>Status</th><th>Actions</th></tr></thead><tbody id="fileTable"></tbody></table></div><div id="fileHist"></div></div></div>
+
+<!-- REPORTS -->
+<div id="mod-reports" class="mod"><div class="panel"><h3>Professional Reports</h3>
+<div class="searchbar"><select id="r_type" onchange="genReport()"><option value="purchase">Purchase Report</option><option value="sales">Sales Report</option><option value="stock">Stock Report</option><option value="vendor">Vendor Report</option><option value="customer">Customer Report</option><option value="expense">Expense Report</option><option value="salary">Employee Salary Report</option><option value="bank">Bank Statement</option><option value="voucher">Payment Voucher Report</option><option value="file">Vehicle File Report</option><option value="profit">Vehicle Profit Report</option><option value="pnl">Overall Profit & Loss</option></select>
+<input type="date" id="r_f1"><input type="date" id="r_f2"><input id="r_search" placeholder="Filter text" oninput="genReport()"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="genReport()">Generate</button><button class="btn btn-g" onclick="printReport()">Print / PDF</button><button class="btn btn-o" onclick="exportCSV()">Export Excel (CSV)</button></div>
+<div id="reportOut" class="tblwrap" style="max-height:600px"></div></div></div>
+
+<!-- SETTINGS -->
+<div id="mod-settings" class="mod"><div class="panel"><h3>Company Settings</h3>
+<div class="form-grid"><input id="set_name" placeholder="Company Name"><input id="set_addr" placeholder="Company Address"><input id="set_contact" placeholder="Contact Number"><input id="set_email" placeholder="Email Address">
+<select id="set_cur"><option>Rs.</option><option>PKR</option></select><input id="set_format" placeholder="Receipt Format e.g HM-"><select id="set_paper"><option value="A4">A4</option><option value="thermal">Thermal 80mm</option></select><input id="set_logo" type="file" accept="image/*"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveSettings()">Save Settings</button></div>
+<p style="font-size:12px">Last Backup: <b id="set_backup">Never</b> | DB Version: 1 | Storage: IndexedDB Permanent Local</p></div>
+<div class="panel"><h3>Backup / Restore (Critical)</h3><div class="btnrow"><button class="btn btn-g" onclick="backupNow()">Backup Data (Download JSON)</button><button class="btn btn-p" onclick="exportDB()">Export Database</button><label class="btn btn-o">Import / Restore <input type="file" id="impFile" hidden onchange="importDB(this)"></label></div>
+<p style="font-size:12px;color:#e74c3c">Keep weekly USB backup. Browser storage survives restart but can be cleared if browser uninstalled. Always export before updates. Online sync ready architecture.</p></div>
+<div class="panel"><h3>User Management (Admin Only)</h3><div class="form-grid"><input id="u_name" placeholder="Username"><input id="u_pass" placeholder="Password"><select id="u_role"><option>Administrator</option><option>Manager</option><option>Data Entry Operator</option><option>Reports Only</option></select><input type="hidden" id="u_id"></div>
+<div class="btnrow"><button class="btn btn-p" onclick="saveUser()">Save User</button></div><div class="tblwrap"><table><thead><tr><th>Username</th><th>Role</th><th>Action</th></tr></thead><tbody id="userTable"></tbody></table></div></div></div>
+
+</div></main></div>
+<div id="toast"></div>
+<div id="modal"><div id="modal-box"><div style="text-align:right"><button class="btn btn-r" onclick="closeModal()">Close</button> <button class="btn btn-p" onclick="printModal()">Print</button></div><div id="modal-content" style="margin-top:10px"></div></div></div>
+<div id="print-root"><div id="print-area"></div></div>
+<script>
+let DB_NAME='HafizMotorsDB',db,curUser=null,SET={name:'HAFIZ MOTORS',addr:'Main Showroom Road, Lahore',contact:'0300-0000000',email:'info@hafizmotors.pk',cur:'Rs.',format:'HM-',paper:'A4',logo:''};
+const STORES=['vendors','customers','purchases','sales','vouchers','expenses','employees','salary','banks','bankTx','files','users','settings'];
+function $(id){return document.getElementById(id)}
+function uid(){return Date.now().toString(36)+Math.floor(Math.random()*9999)}
+function today(){return new Date().toISOString().slice(0,10)}
+function toast(m){let t=$('toast');t.innerText=m;t.style.display='block';setTimeout(()=>t.style.display='none',2500)}
+function money(n){return (SET.cur||'Rs.')+' '+Number(n||0).toLocaleString()}
+function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{db=e.target.result;STORES.forEach(s=>{if(!db.objectStoreNames.contains(s))db.createObjectStore(s,{keyPath:'id'})})};r.onsuccess=e=>{db=e.target.result;res()};r.onerror=e=>rej(e)})}
+function store(n,m){return db.transaction(n,m).objectStore(n)}
+function getAll(n){return new Promise(r=>{let q=store(n,'readonly').getAll();q.onsuccess=()=>r(q.result||[]);q.onerror=()=>r([])})}
+function addRec(n,o){o.id=o.id||uid();o._sync=0;return new Promise(r=>{let q=store(n,'readwrite').add(o);q.onsuccess=()=>{autoStamp();r(o)};q.onerror=()=>r(null)})}
+function putRec(n,o){return new Promise(r=>{let q=store(n,'readwrite').put(o);q.onsuccess=()=>{autoStamp();r(o)};q.onerror=()=>r(null)})}
+function delRec(n,id){return new Promise(r=>{let q=store(n,'readwrite').delete(id);q.onsuccess=()=>{autoStamp();r(1)};q.onerror=()=>r(0)})}
+function autoStamp(){let d=new Date().toLocaleString();localStorage.setItem('hm_last',d);if($('backupInfo'))$('backupInfo').innerText='Saved: '+d;if($('set_backup'))$('set_backup').innerText=d}
+function canWrite(){if(!curUser)return false;if(curUser.role==='Reports Only'){toast('Reports Only: view only');return false}return true}
+function isAdmin(){return curUser&&curUser.role==='Administrator'}
+const MODS=[['dashboard','📊 Dashboard'],['vendors','🏭 Vendors'],['customers','👥 Customers'],['purchase','🚗 Purchase Inventory'],['sales','💰 Sales'],['stock','📦 Stock Inventory'],['vouchers','🧾 Payment Vouchers'],['expenses','💸 Expenses'],['employees','👔 Employees'],['banking','🏦 Banking'],['files','📁 Vehicle Files'],['reports','📈 Reports'],['settings','⚙️ Settings']];
+function buildNav(){let h='';MODS.forEach(m=>{if(curUser.role==='Reports Only'&&!['dashboard','reports'].includes(m[0]))return;if(curUser.role==='Data Entry Operator'&&m[0]==='settings')return;h+=`<button id="nav-${m[0]}" onclick="showModule('${m[0]}')">${m[1]}</button>`});$('nav').innerHTML=h}
+function showModule(m){document.querySelectorAll('.mod').forEach(x=>x.classList.remove('active'));$('mod-'+m).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));let nb=$('nav-'+m);if(nb)nb.classList.add('active');$('pageTitle').innerText=MODS.find(x=>x[0]===m)[1];if(m==='dashboard')loadDashboard();if(m==='stock')renderStock();if(m==='reports')genReport()}
+function logout(){location.reload()}
+async function seed(){let u=await getAll('users');if(!u.length){await addRec('users',{id:'u1',username:'admin',password:'admin123',role:'Administrator'});await addRec('users',{id:'u2',username:'manager',password:'manager123',role:'Manager'});await addRec('users',{id:'u3',username:'data',password:'data123',role:'Data Entry Operator'});await addRec('users',{id:'u4',username:'reports',password:'reports123',role:'Reports Only'})}let s=await getAll('settings');if(s.length)SET=Object.assign(SET,s[0]);else await addRec('settings',Object.assign({id:'main'},SET));applySet()}
+function applySet(){$('sideCo').innerText=SET.name||'HAFIZ MOTORS';if(SET.logo)$('sideLogo').innerHTML=`<img src="${SET.logo}">`;else $('sideLogo').innerText='HM';$('set_name').value=SET.name||'';$('set_addr').value=SET.addr||'';$('set_contact').value=SET.contact||'';$('set_email').value=SET.email||'';$('set_cur').value=SET.cur||'Rs.';$('set_format').value=SET.format||'HM-';$('set_paper').value=SET.paper||'A4'}
+async function login(){let u=$('lg_user').value.trim(),p=$('lg_pass').value;let all=await getAll('users');let f=all.find(x=>x.username===u&&x.password===p);if(!f){alert('Invalid login');return}curUser=f;$('login-screen').style.display='none';$('app').style.display='flex';$('userInfo').innerText=f.username+' ('+f.role+')';buildNav();initDates();await refreshDropdowns();await loadDashboard();await renderAll();autoStamp();toast('Welcome '+f.username)}
+function initDates(){['v_date','c_date','p_date','s_date','vc_date','ex_date','e_join','sl_date','bt_date','f_rdate','f_gdate'].forEach(i=>{if($(i)&&!$(i).value)$(i).value=today()});if($('sl_month'))$('sl_month').value=new Date().toISOString().slice(0,7)}
+async function refreshDropdowns(){let v=await getAll('vendors'),c=await getAll('customers'),b=await getAll('banks'),e=await getAll('employees'),p=await getAll('purchases');
+$('p_vendorSel').innerHTML='<option value="">-- Select Registered Vendor --</option>'+v.map(x=>`<option value="${x.id}">${x.name} - ${x.cnic||''}</option>`).join('');
+$('p_fvendor').innerHTML='<option value="">All Vendors</option>'+v.map(x=>`<option>${x.name}</option>`).join('');
+let av=p.filter(x=>x.stock!=='Sold');$('s_vehicle').innerHTML='<option value="">-- Select Available Vehicle --</option>'+av.map(x=>`<option value="${x.id}">${x.reg} | ${x.chassis} | ${x.name} ${x.model||''}</option>`).join('');
+$('s_custSel').innerHTML='<option value="">-- Select Registered Customer --</option>'+c.map(x=>`<option value="${x.id}">${x.name} - ${x.cnic||''}</option>`).join('');
+let bo=b.map(x=>`<option value="${x.id}">${x.bank} - ${x.accNo} (${Number(x.balance||x.opening||0).toLocaleString()})</option>`).join('');
+$('p_bank').innerHTML='<option value="">Cash / No Bank</option>'+bo;$('s_bank').innerHTML='<option value="">Cash / No Bank</option>'+bo;$('vc_bank').innerHTML='<option value="">Cash / No Bank</option>'+bo;
+$('bt_bank').innerHTML=bo||'<option value="">No Bank</option>';$('bt_fbank').innerHTML='<option value="">All Banks</option>'+b.map(x=>`<option value="${x.id}">${x.bank}-${x.accNo}</option>`).join('');
+$('sl_emp').innerHTML='<option value="">-- Select Employee --</option>'+e.map(x=>`<option value="${x.id}">${x.name} - ${x.salary}</option>`).join('')}
+async function renderAll(){await renderVendors();await renderCustomers();await renderPurchases();await renderSales();await renderStock();await renderVouchers();await renderExpenses();await renderEmployees();await renderSalary();await renderBanks();await renderBankTx();await renderFiles();await renderUsers()}
+/* DASHBOARD */
+async function loadDashboard(){let v=await getAll('vendors'),c=await getAll('customers'),p=await getAll('purchases'),s=await getAll('sales'),e=await getAll('employees'),ex=await getAll('expenses'),vc=await getAll('vouchers'),b=await getAll('banks');
+let tP=p.reduce((a,x)=>a+Number(x.total||0),0),tS=s.reduce((a,x)=>a+Number(x.price||0),0),tE=ex.reduce((a,x)=>a+Number(x.amount||0),0);
+let tB=b.reduce((a,x)=>a+Number(x.balance!=null?x.balance:x.opening||0),0);
+let soldChassis=new Set(s.map(x=>x.chassis));let soldCost=p.filter(x=>soldChassis.has(x.chassis)).reduce((a,x)=>a+Number(x.total||0),0);
+let profit=tS-soldCost-tE;let avail=p.filter(x=>x.stock!=='Sold').length;
+$('dashCards').innerHTML=`<div class="card"><h4>Total Purchases</h4><div class="v">${money(tP)}</div></div><div class="card green"><h4>Total Sales</h4><div class="v">${money(tS)}</div></div><div class="card"><h4>Available Vehicles</h4><div class="v">${avail}</div></div><div class="card"><h4>Vendors</h4><div class="v">${v.length}</div></div><div class="card"><h4>Customers</h4><div class="v">${c.length}</div></div><div class="card"><h4>Employees</h4><div class="v">${e.length}</div></div><div class="card red"><h4>Expenses</h4><div class="v">${money(tE)}</div></div><div class="card"><h4>Payments</h4><div class="v">${vc.length}</div></div><div class="card green"><h4>Bank Balance</h4><div class="v">${money(tB)}</div></div><div class="card orange"><h4>Profit</h4><div class="v">${money(profit)}</div></div>`;
+let rp=[...p].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,5);let rs=[...s].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,5);
+$('dashPur').innerHTML=rp.map(x=>`<tr><td>${x.date||''}</td><td>${x.name||''}</td><td>${x.reg||''}</td><td>${money(x.total)}</td></tr>`).join('')||'<tr><td colspan=4>No data</td></tr>';
+$('dashSale').innerHTML=rs.map(x=>`<tr><td>${x.date||''}</td><td>${x.vname||''}</td><td>${x.reg||''}</td><td>${money(x.price)}</td></tr>`).join('')||'<tr><td colspan=4>No data</td></tr>';
+$('finSum').innerHTML=`<table><tr><th>Purchase Total</th><td>${money(tP)}</td><th>Sales Total</th><td>${money(tS)}</td></tr><tr><th>Sold Vehicle Cost</th><td>${money(soldCost)}</td><th>Expenses</th><td>${money(tE)}</td></tr><tr><th>Net Profit</th><td><b>${money(profit)}</b></td><th>Bank Balance</th><td>${money(tB)}</td></tr></table>`}
+/* VENDORS */
+async function saveVendor(){if(!canWrite())return;let n=$('v_name').value.trim(),ct=$('v_contact').value.trim();if(!n||!ct){toast('Name & Contact required');return}
+let o={id:$('v_id').value||uid(),name:n,fname:$('v_fname').value,cnic:$('v_cnic').value,contact:ct,address:$('v_address').value,city:$('v_city').value,prov:$('v_prov').value,care:$('v_care').value,date:$('v_date').value||today()};
+if($('v_id').value)await putRec('vendors',o);else await addRec('vendors',o);
+if($('v_both').checked&&o.cnic){let cs=await getAll('customers');if(!cs.find(x=>x.cnic===o.cnic)){await addRec('customers',{name:o.name,fname:o.fname,cnic:o.cnic,contact:o.contact,address:o.address,city:o.city,prov:o.prov,care:o.care,date:o.date,linked:true})}}
+resetVendor();await renderVendors();await refreshDropdowns();toast('Vendor saved')}
+function resetVendor(){['v_name','v_fname','v_cnic','v_contact','v_address','v_city','v_prov','v_care','v_id'].forEach(i=>$(i).value='');$('v_date').value=today();$('v_both').checked=false}
+async function renderVendors(){let a=await getAll('vendors');let q=($('v_search').value||'').toLowerCase();a=a.filter(x=>(x.name||'').toLowerCase().includes(q)||(x.cnic||'').includes(q)||(x.contact||'').includes(q));$('vCount').innerText=a.length;
+$('vendorTable').innerHTML=a.map(x=>`<tr><td>${x.name}</td><td>${x.fname||''}</td><td>${x.cnic||''}</td><td>${x.contact}</td><td>${x.city||''}</td><td>${x.date||''}</td><td><div class="act"><button class="mini e" onclick="editVendor('${x.id}')">Edit</button><button class="mini d" onclick="delVendor('${x.id}')">Del</button><button class="mini vi" onclick="vendorHistory('${x.id}')">History</button><button class="mini pr" onclick="printVendor('${x.id}')">Print</button></div></td></tr>`).join('')}
+async function editVendor(id){let a=(await getAll('vendors')).find(x=>x.id===id);if(!a)return;$('v_id').value=a.id;$('v_name').value=a.name;$('v_fname').value=a.fname||'';$('v_cnic').value=a.cnic||'';$('v_contact').value=a.contact;$('v_address').value=a.address||'';$('v_city').value=a.city||'';$('v_prov').value=a.prov||'';$('v_care').value=a.care||'';$('v_date').value=a.date||today();window.scrollTo(0,0)}
+async function delVendor(id){if(!canWrite())return;if(!confirm('Delete vendor?'))return;await delRec('vendors',id);renderVendors();refreshDropdowns()}
+async function vendorHistory(id){let v=(await getAll('vendors')).find(x=>x.id===id);let p=await getAll('purchases'),s=await getAll('sales'),vc=await getAll('vouchers');
+let pur=p.filter(x=>x.vcnic===v.cnic||x.vname===v.name),sal=s.filter(x=>x.ccnic===v.cnic&&v.cnic);let tP=pur.reduce((a,x)=>a+Number(x.total||0),0),tS=sal.reduce((a,x)=>a+Number(x.price||0),0);
+let pay=vc.filter(x=>x.party===v.name);let html=`<h3>History: ${v.name}</h3><p>Purchased Vehicles: ${pur.length} | Total Purchase: ${money(tP)} | Sold To Vendor: ${sal.length} | Total Sale: ${money(tS)} | Outstanding: ${money(tP-tS)} | Vouchers: ${pay.length}</p><div class="tblwrap"><table><thead><tr><th>Type</th><th>Date</th><th>Vehicle/Desc</th><th>Amount</th></tr></thead><tbody>`+pur.map(x=>`<tr><td>Purchase</td><td>${x.date}</td><td>${x.name} ${x.reg}</td><td>${money(x.total)}</td></tr>`).join('')+sal.map(x=>`<tr><td>Sale</td><td>${x.date}</td><td>${x.vname} ${x.reg}</td><td>${money(x.price)}</td></tr>`).join('')+pay.map(x=>`<tr><td>${x.type}</td><td>${x.date}</td><td>${x.desc||''}</td><td>${money(x.amount)}</td></tr>`).join('')+`</tbody></table></div>`;
+$('vendorHist').innerHTML=html;$('modal-content').innerHTML=html;$('modal').style.display='flex'}
+/* CUSTOMERS */
+async function saveCustomer(){if(!canWrite())return;let n=$('c_name').value.trim(),ct=$('c_contact').value.trim();if(!n||!ct){toast('Name & Contact required');return}
+let o={id:$('c_id').value||uid(),name:n,fname:$('c_fname').value,cnic:$('c_cnic').value,contact:ct,address:$('c_address').value,city:$('c_city').value,prov:$('c_prov').value,care:$('c_care').value,date:$('c_date').value||today()};
+if($('c_id').value)await putRec('customers',o);else await addRec('customers',o);
+if($('c_both').checked&&o.cnic){let vs=await getAll('vendors');if(!vs.find(x=>x.cnic===o.cnic))await addRec('vendors',{name:o.name,fname:o.fname,cnic:o.cnic,contact:o.contact,address:o.address,city:o.city,prov:o.prov,care:o.care,date:o.date,linked:true})}
+resetCustomer();await renderCustomers();await refreshDropdowns();toast('Customer saved')}
+function resetCustomer(){['c_name','c_fname','c_cnic','c_contact','c_address','c_city','c_prov','c_care','c_id'].forEach(i=>$(i).value='');$('c_date').value=today();$('c_both').checked=false}
+async function renderCustomers(){let a=await getAll('customers');let q=($('c_search').value||'').toLowerCase();a=a.filter(x=>(x.name||'').toLowerCase().includes(q)||(x.cnic||'').includes(q)||(x.contact||'').includes(q));$('cCount').innerText=a.length;
+$('customerTable').innerHTML=a.map(x=>`<tr><td>${x.name}</td><td>${x.fname||''}</td><td>${x.cnic||''}</td><td>${x.contact}</td><td>${x.city||''}</td><td>${x.date||''}</td><td><div class="act"><button class="mini e" onclick="editCustomer('${x.id}')">Edit</button><button class="mini d" onclick="delCustomer('${x.id}')">Del</button><button class="mini vi" onclick="custHistory('${x.id}')">History</button><button class="mini pr" onclick="printCustomer('${x.id}')">Print</button></div></td></tr>`).join('')}
+async function editCustomer(id){let a=(await getAll('customers')).find(x=>x.id===id);if(!a)return;$('c_id').value=a.id;$('c_name').value=a.name;$('c_fname').value=a.fname||'';$('c_cnic').value=a.cnic||'';$('c_contact').value=a.contact;$('c_address').value=a.address||'';$('c_city').value=a.city||'';$('c_prov').value=a.prov||'';$('c_care').value=a.care||'';$('c_date').value=a.date||today();window.scrollTo(0,0)}
+async function delCustomer(id){if(!canWrite())return;if(!confirm('Delete customer?'))return;await delRec('customers',id);renderCustomers();refreshDropdowns()}
+async function custHistory(id){let v=(await getAll('customers')).find(x=>x.id===id);let s=await getAll('sales'),vc=await getAll('vouchers');let sal=s.filter(x=>x.ccnic===v.cnic||x.cname===v.name);let tS=sal.reduce((a,x)=>a+Number(x.price||0),0);
+let html=`<h3>Customer History: ${v.name}</h3><p>Total Purchases: ${sal.length} | Total: ${money(tS)}</p><div class="tblwrap"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Price</th><th>Recv</th><th>Rem</th></tr></thead><tbody>`+sal.map(x=>`<tr><td>${x.date}</td><td>${x.vname} ${x.reg}</td><td>${money(x.price)}</td><td>${money(x.recv)}</td><td>${money(x.rem)}</td></tr>`).join('')+`</tbody></table></div>`;$('custHist').innerHTML=html;$('modal-content').innerHTML=html;$('modal').style.display='flex'}
+/* PURCHASE */
+function calcP(){let p=Number($('p_price').value||0),a=Number($('p_add').value||0),pd=Number($('p_paid').value||0);let t=p+a;$('p_total').value=t;$('p_rem').value=t-pd}
+function toggleJapaneseGrade(prefix){let isJapanese=$(prefix+'_vehicleType').value==='Japanese';$(prefix+'_grade_wrap')&&($(prefix+'_grade_wrap').style.display=isJapanese?'block':'none');if(!isJapanese&&$(prefix+'_grade'))$(prefix+'_grade').value=''}
+async function fillPVendor(){let id=$('p_vendorSel').value;if(!id)return;let v=(await getAll('vendors')).find(x=>x.id===id);if(v){$('p_vname').value=v.name;$('p_vfname').value=v.fname||'';$('p_vcnic').value=v.cnic||'';$('p_vcontact').value=v.contact||'';$('p_vaddr').value=v.address||'';$('p_vcity').value=v.city||'';$('p_vprov').value=v.prov||'';$('p_vcare').value=v.care||''}}
+async function savePurchase(){if(!canWrite())return;let ch=$('p_chassis').value.trim(),rg=$('p_reg').value.trim(),nm=$('p_name').value.trim();if(!nm||!ch||!rg){toast('Vehicle Name, Reg & Chassis required');return}
+let all=await getAll('purchases');let eid=$('p_id').value;if(all.find(x=>x.chassis===ch&&x.id!==eid)){toast('Duplicate chassis not allowed');return}
+calcP();let o={id:eid||uid(),make:$('p_make').value,name:nm,model:$('p_model').value,year:$('p_year').value,reg:rg,chassis:ch,engine:$('p_engine').value,color:$('p_color').value,variant:$('p_variant').value,trans:$('p_trans').value,drive:$('p_drive').value,vehicleType:$('p_vehicleType').value,grade:$('p_vehicleType').value==='Japanese'?$('p_grade').value:'',fuel:$('p_fuel').value,cat:$('p_cat').value,vname:$('p_vname').value,vfname:$('p_vfname').value,vcnic:$('p_vcnic').value,vcontact:$('p_vcontact').value,vaddr:$('p_vaddr').value,vcity:$('p_vcity').value,vprov:$('p_vprov').value,vcare:$('p_vcare').value,date:$('p_date').value||today(),price:Number($('p_price').value||0),add:Number($('p_add').value||0),total:Number($('p_total').value||0),method:$('p_method').value,bank:$('p_bank').value,paid:Number($('p_paid').value||0),rem:Number($('p_rem').value||0),remarks:$('p_remarks').value,stock:'Available',rcpt:(SET.format||'HM-')+'P-'+Date.now().toString().slice(-6)};
+o.status=o.rem<=0?'Paid':(o.paid>0?'Partial':'Unpaid');
+if(eid){let old=all.find(x=>x.id===eid);o.stock=old.stock;o.rcpt=old.rcpt;await putRec('purchases',o)}else await addRec('purchases',o);
+if(o.bank&&o.paid>0)await bankAuto(o.bank,o.date,'Withdrawal','PUR-'+o.rcpt,'Purchase '+o.reg,o.paid,0);
+resetPurchase();await renderPurchases();await refreshDropdowns();await loadDashboard();toast('Purchase saved & stock updated')}
+function resetPurchase(){['p_make','p_name','p_model','p_year','p_reg','p_chassis','p_engine','p_color','p_variant','p_vname','p_vfname','p_vcnic','p_vcontact','p_vaddr','p_vcity','p_vprov','p_vcare','p_price','p_paid','p_remarks','p_id'].forEach(i=>$(i).value='');$('p_add').value=0;$('p_vehicleType').value='';$('p_grade').value='';toggleJapaneseGrade('p');$('p_date').value=today()}
+async function renderPurchases(){let a=await getAll('purchases');let q=($('p_search').value||'').toLowerCase(),fv=$('p_fvendor').value,f1=$('p_f1').value,f2=$('p_f2').value;
+a=a.filter(x=>{let ok=(!q||(x.chassis||'').toLowerCase().includes(q)||(x.reg||'').toLowerCase().includes(q)||(x.engine||'').toLowerCase().includes(q)||(x.name||'').toLowerCase().includes(q));if(fv&&x.vname!==fv)ok=false;if(f1&&x.date<f1)ok=false;if(f2&&x.date>f2)ok=false;return ok}).sort((x,y)=>(y.date||'').localeCompare(x.date||''));
+$('purchaseTable').innerHTML=a.map(x=>`<tr><td>${x.date}</td><td>${x.name} ${x.model||''}</td><td>${x.reg}</td><td>${x.chassis}</td><td>${x.vname||''}</td><td>${x.vehicleType||''}</td><td>${x.grade||''}</td><td>${money(x.total)}</td><td>${money(x.paid)}</td><td>${money(x.rem)}</td><td>${x.stock}</td><td><div class="act"><button class="mini e" onclick="editPurchase('${x.id}')">Edit</button><button class="mini d" onclick="delPurchase('${x.id}')">Del</button><button class="mini pr" onclick="printPurchase('${x.id}')">Receipt</button></div></td></tr>`).join('')}
+async function editPurchase(id){let x=(await getAll('purchases')).find(v=>v.id===id);if(!x)return;if(x.stock==='Sold'){toast('Sold vehicle cannot be edited');return}
+$('p_id').value=x.id;$('p_make').value=x.make||'';$('p_name').value=x.name;$('p_model').value=x.model||'';$('p_year').value=x.year||'';$('p_reg').value=x.reg;$('p_chassis').value=x.chassis;$('p_engine').value=x.engine||'';$('p_color').value=x.color||'';$('p_variant').value=x.variant||'';$('p_trans').value=x.trans||'';$('p_drive').value=x.drive||'';$('p_vehicleType').value=x.vehicleType||'';$('p_grade').value=x.grade||'';toggleJapaneseGrade('p');$('p_fuel').value=x.fuel||'';$('p_cat').value=x.cat||'';$('p_vname').value=x.vname||'';$('p_vfname').value=x.vfname||'';$('p_vcnic').value=x.vcnic||'';$('p_vcontact').value=x.vcontact||'';$('p_vaddr').value=x.vaddr||'';$('p_vcity').value=x.vcity||'';$('p_vprov').value=x.vprov||'';$('p_vcare').value=x.vcare||'';$('p_date').value=x.date;$('p_price').value=x.price;$('p_add').value=x.add;$('p_method').value=x.method;$('p_paid').value=x.paid;$('p_remarks').value=x.remarks||'';calcP();window.scrollTo(0,0)}
+async function delPurchase(id){if(!canWrite())return;let p=(await getAll('purchases')).find(x=>x.id===id);if(p.stock==='Sold'){toast('Cannot delete sold vehicle');return}if(!confirm('Delete purchase?'))return;await delRec('purchases',id);renderPurchases();refreshDropdowns();loadDashboard()}
+/* SALES */
+function calcS(){let p=Number($('s_price').value||0),r=Number($('s_recv').value||0);$('s_rem').value=p-r}
+async function fillSVehicle(){let id=$('s_vehicle').value;if(!id)return;let x=(await getAll('purchases')).find(v=>v.id===id);if(!x)return;$('s_purId').value=x.id;$('s_make').value=x.make||'';$('s_name').value=x.name;$('s_model').value=x.model||'';$('s_year').value=x.year||'';$('s_reg').value=x.reg;$('s_chassis').value=x.chassis;$('s_engine').value=x.engine||'';$('s_color').value=x.color||'';$('s_variant').value=x.variant||'';$('s_trans').value=x.trans||'';$('s_drive').value=x.drive||'';$('s_fuel').value=x.fuel||'';$('s_vehicleType').value=x.vehicleType||'';$('s_grade').value=x.grade||''}
+async function fillSCust(){let id=$('s_custSel').value;if(!id)return;let v=(await getAll('customers')).find(x=>x.id===id);if(v){$('s_cname').value=v.name;$('s_cfname').value=v.fname||'';$('s_ccnic').value=v.cnic||'';$('s_ccontact').value=v.contact||'';$('s_caddr').value=v.address||'';$('s_ccity').value=v.city||'';$('s_cprov').value=v.prov||'';$('s_ccare').value=v.care||''}}
+async function saveSale(){if(!canWrite())return;let pid=$('s_purId').value;if(!pid&&!$('s_id').value){toast('Select vehicle from stock');return}
+let cn=$('s_cname').value.trim();if(!cn){toast('Customer name required');return}calcS();
+let purs=await getAll('purchases');let eid=$('s_id').value;
+if(!eid){let veh=purs.find(x=>x.id===pid);if(!veh||veh.stock==='Sold'){toast('Vehicle already SOLD - cannot sell twice');return}}
+let o={id:eid||uid(),purId:pid,make:$('s_make').value,vname:$('s_name').value,model:$('s_model').value,year:$('s_year').value,reg:$('s_reg').value,chassis:$('s_chassis').value,engine:$('s_engine').value,color:$('s_color').value,variant:$('s_variant').value,trans:$('s_trans').value,drive:$('s_drive').value,vehicleType:$('s_vehicleType').value,grade:$('s_grade').value,fuel:$('s_fuel').value,cname:cn,cfname:$('s_cfname').value,ccnic:$('s_ccnic').value,ccontact:$('s_ccontact').value,caddr:$('s_caddr').value,ccity:$('s_ccity').value,cprov:$('s_cprov').value,ccare:$('s_ccare').value,date:$('s_date').value||today(),price:Number($('s_price').value||0),method:$('s_method').value,bank:$('s_bank').value,recv:Number($('s_recv').value||0),rem:Number($('s_rem').value||0),remarks:$('s_remarks').value,rcpt:(SET.format||'HM-')+'S-'+Date.now().toString().slice(-6)};
+o.status=o.rem<=0?'Paid':(o.recv>0?'Partial':'Unpaid');
+if(eid){let old=(await getAll('sales')).find(x=>x.id===eid);o.purId=old.purId;o.rcpt=old.rcpt;await putRec('sales',o)}else{await addRec('sales',o);let veh=purs.find(x=>x.id===pid);veh.stock='Sold';await putRec('purchases',veh);if(o.bank&&o.recv>0)await bankAuto(o.bank,o.date,'Deposit','SAL-'+o.rcpt,'Sale '+o.reg,0,o.recv)}
+resetSale();await renderSales();await renderPurchases();await refreshDropdowns();await loadDashboard();toast('Sale saved & stock marked SOLD')}
+function resetSale(){['s_make','s_name','s_model','s_year','s_reg','s_chassis','s_engine','s_color','s_variant','s_trans','s_drive','s_fuel','s_vehicleType','s_grade','s_cname','s_cfname','s_ccnic','s_ccontact','s_caddr','s_ccity','s_cprov','s_ccare','s_price','s_recv','s_remarks','s_id','s_purId'].forEach(i=>$(i).value='');$('s_recv').value=0;$('s_date').value=today();$('s_vehicle').value='';$('s_custSel').value=''}
+async function renderSales(){let a=await getAll('sales');let q=($('s_search').value||'').toLowerCase(),f1=$('s_f1').value,f2=$('s_f2').value;
+a=a.filter(x=>{let ok=(!q||(x.chassis||'').toLowerCase().includes(q)||(x.reg||'').toLowerCase().includes(q)||(x.engine||'').toLowerCase().includes(q)||(x.cname||'').toLowerCase().includes(q));if(f1&&x.date<f1)ok=false;if(f2&&x.date>f2)ok=false;return ok}).sort((x,y)=>(y.date||'').localeCompare(x.date||''));
+$('salesTable').innerHTML=a.map(x=>`<tr><td>${x.date}</td><td>${x.vname}</td><td>${x.reg}</td><td>${x.chassis}</td><td>${x.cname}</td><td>${x.vehicleType||''}</td><td>${x.grade||''}</td><td>${money(x.price)}</td><td>${money(x.recv)}</td><td>${money(x.rem)}</td><td><div class="act"><button class="mini e" onclick="editSale('${x.id}')">Edit</button><button class="mini d" onclick="delSale('${x.id}')">Del</button><button class="mini pr" onclick="printSale('${x.id}')">Receipt</button></div></td></tr>`).join('')}
+async function editSale(id){let x=(await getAll('sales')).find(v=>v.id===id);if(!x)return;$('s_id').value=x.id;$('s_purId').value=x.purId;$('s_make').value=x.make||'';$('s_name').value=x.vname;$('s_model').value=x.model||'';$('s_year').value=x.year||'';$('s_reg').value=x.reg;$('s_chassis').value=x.chassis;$('s_engine').value=x.engine||'';$('s_color').value=x.color||'';$('s_variant').value=x.variant||'';$('s_trans').value=x.trans||'';$('s_drive').value=x.drive||'';$('s_fuel').value=x.fuel||'';$('s_vehicleType').value=x.vehicleType||'';$('s_grade').value=x.grade||'';$('s_cname').value=x.cname;$('s_cfname').value=x.cfname||'';$('s_ccnic').value=x.ccnic||'';$('s_ccontact').value=x.ccontact||'';$('s_caddr').value=x.caddr||'';$('s_ccity').value=x.ccity||'';$('s_cprov').value=x.cprov||'';$('s_ccare').value=x.ccare||'';$('s_date').value=x.date;$('s_price').value=x.price;$('s_method').value=x.method;$('s_recv').value=x.recv;$('s_remarks').value=x.remarks||'';calcS();window.scrollTo(0,0)}
+async function delSale(id){if(!canWrite())return;if(!confirm('Delete sale? Stock will become Available again.'))return;let s=(await getAll('sales')).find(x=>x.id===id);await delRec('sales',id);let p=(await getAll('purchases')).find(x=>x.id===s.purId||x.chassis===s.chassis);if(p){p.stock='Available';await putRec('purchases',p)}renderSales();renderPurchases();refreshDropdowns();loadDashboard()}
+/* STOCK */
+async function renderStock(){let p=await getAll('purchases'),s=await getAll('sales');let f=$('st_filter').value,q=($('st_search').value||'').toLowerCase();
+let avail=p.filter(x=>x.stock!=='Sold').length;
+$('stockCards').innerHTML=`<div class="card"><h4>Total Purchased</h4><div class="v">${p.length}</div></div><div class="card red"><h4>Total Sold</h4><div class="v">${s.length}</div></div><div class="card green"><h4>Available Stock</h4><div class="v">${avail}</div></div>`;
+let a=p.filter(x=>(!f||x.stock===f)&&(!q||(x.name||'').toLowerCase().includes(q)||(x.reg||'').toLowerCase().includes(q)||(x.chassis||'').toLowerCase().includes(q)));
+$('stockTable').innerHTML=a.map(x=>`<tr><td>${x.name}</td><td>${x.model||''} ${x.year||''}</td><td>${x.reg}</td><td>${x.chassis}</td><td>${x.engine||''}</td><td>${x.color||''}</td><td>${x.vehicleType||''}</td><td>${x.grade||''}</td><td>${x.date}</td><td>${money(x.total)}</td><td>${x.vname||''}</td><td><b>${x.stock}</b></td><td>${x.stock!=='Sold'?`<select onchange="setStock('${x.id}',this.value)"><option>${x.stock}</option><option>Available</option><option>Reserved</option></select>`:''}</td></tr>`).join('')}
+async function setStock(id,st){let p=(await getAll('purchases')).find(x=>x.id===id);p.stock=st;await putRec('purchases',p);renderStock()}
+/* VOUCHERS */
+async function saveVoucher(){if(!canWrite())return;let pt=$('vc_party').value.trim(),am=Number($('vc_amt').value||0);if(!pt||!am){toast('Party & Amount required');return}
+let o={id:$('vc_id').value||uid(),no:$('vc_no').value||((SET.format||'HM-')+'V-'+Date.now().toString().slice(-6)),date:$('vc_date').value||today(),party:pt,cnic:$('vc_cnic').value,type:$('vc_type').value,method:$('vc_method').value,bank:$('vc_bank').value,amount:am,ref:$('vc_ref').value,desc:$('vc_desc').value};
+if($('vc_id').value)await putRec('vouchers',o);else await addRec('vouchers',o);
+if(o.bank){if(o.type==='Payment Voucher')await bankAuto(o.bank,o.date,'Withdrawal',o.no,'Voucher '+o.party,o.amount,0);else await bankAuto(o.bank,o.date,'Deposit',o.no,'Voucher '+o.party,0,o.amount)}
+resetVoucher();renderVouchers();refreshDropdowns();loadDashboard();toast('Voucher saved')}
+function resetVoucher(){['vc_no','vc_party','vc_cnic','vc_amt','vc_ref','vc_desc','vc_id'].forEach(i=>$(i).value='');$('vc_date').value=today()}
+async function renderVouchers(){let a=await getAll('vouchers');let q=($('vc_search').value||'').toLowerCase(),ft=$('vc_ftype').value,f1=$('vc_f1').value,f2=$('vc_f2').value;
+a=a.filter(x=>(!q||(x.party||'').toLowerCase().includes(q)||(x.no||'').toLowerCase().includes(q))&&(!ft||x.type===ft)&&(!f1||x.date>=f1)&&(!f2||x.date<=f2)).sort((x,y)=>(y.date||'').localeCompare(x.date||''));
+$('voucherTable').innerHTML=a.map(x=>`<tr><td>${x.no}</td><td>${x.date}</td><td>${x.party}</td><td>${x.type}</td><td>${x.method}</td><td>${money(x.amount)}</td><td>${x.desc||''}</td><td><div class="act"><button class="mini e" onclick="editVoucher('${x.id}')">Edit</button><button class="mini d" onclick="delVoucher('${x.id}')">Del</button><button class="mini pr" onclick="printVoucher('${x.id}')">Print</button></div></td></tr>`).join('')}
+async function editVoucher(id){let x=(await getAll('vouchers')).find(v=>v.id===id);$('vc_id').value=x.id;$('vc_no').value=x.no;$('vc_date').value=x.date;$('vc_party').value=x.party;$('vc_cnic').value=x.cnic||'';$('vc_type').value=x.type;$('vc_method').value=x.method;$('vc_amt').value=x.amount;$('vc_ref').value=x.ref||'';$('vc_desc').value=x.desc||''}
+async function delVoucher(id){if(!canWrite())return;if(!confirm('Delete voucher?'))return;await delRec('vouchers',id);renderVouchers()}
+/* EXPENSES */
+async function saveExpense(){if(!canWrite())return;let d=$('ex_desc').value.trim(),am=Number($('ex_amt').value||0);if(!d||!am){toast('Description & Amount required');return}
+let o={id:$('ex_id').value||uid(),date:$('ex_date').value||today(),cat:$('ex_cat').value,desc:d,reg:$('ex_reg').value,chas:$('ex_chas').value,amount:am,method:$('ex_method').value,vno:$('ex_vno').value||('EXP-'+Date.now().toString().slice(-5)),rem:$('ex_rem').value};
+if($('ex_id').value)await putRec('expenses',o);else await addRec('expenses',o);resetExpense();renderExpenses();loadDashboard();toast('Expense saved')}
+function resetExpense(){['ex_desc','ex_reg','ex_chas','ex_amt','ex_vno','ex_rem','ex_id'].forEach(i=>$(i).value='');$('ex_date').value=today()}
+async function renderExpenses(){let a=await getAll('expenses');let q=($('ex_search').value||'').toLowerCase(),fc=$('ex_fcat').value;a=a.filter(x=>(!q||(x.desc||'').toLowerCase().includes(q)||(x.reg||'').toLowerCase().includes(q)||(x.chas||'').toLowerCase().includes(q))&&(!fc||x.cat===fc));
+$('expenseTable').innerHTML=a.map(x=>`<tr><td>${x.date}</td><td>${x.cat}</td><td>${x.desc}</td><td>${x.reg||''} ${x.chas||''}</td><td>${money(x.amount)}</td><td>${x.method}</td><td><div class="act"><button class="mini e" onclick="editExpense('${x.id}')">Edit</button><button class="mini d" onclick="delExpense('${x.id}')">Del</button></div></td></tr>`).join('')}
+async function editExpense(id){let x=(await getAll('expenses')).find(v=>v.id===id);$('ex_id').value=x.id;$('ex_date').value=x.date;$('ex_cat').value=x.cat;$('ex_desc').value=x.desc;$('ex_reg').value=x.reg||'';$('ex_chas').value=x.chas||'';$('ex_amt').value=x.amount;$('ex_method').value=x.method;$('ex_vno').value=x.vno;$('ex_rem').value=x.rem||''}
+async function delExpense(id){if(!canWrite())return;if(!confirm('Delete?'))return;await delRec('expenses',id);renderExpenses()}
+/* EMPLOYEES + SALARY */
+async function saveEmployee(){if(!canWrite())return;let n=$('e_name').value.trim();if(!n){toast('Name required');return}
+let o={id:$('e_id').value||uid(),name:n,fname:$('e_fname').value,cnic:$('e_cnic').value,contact:$('e_contact').value,addr:$('e_addr').value,join:$('e_join').value||today(),desig:$('e_desig').value,salary:Number($('e_salary').value||0),status:$('e_status').value,adv:0};
+if($('e_id').value){let old=(await getAll('employees')).find(x=>x.id===$('e_id').value);o.adv=old.adv||0;await putRec('employees',o)}else await addRec('employees',o);
+resetEmployee();renderEmployees();refreshDropdowns();toast('Employee saved')}
+function resetEmployee(){['e_name','e_fname','e_cnic','e_contact','e_addr','e_desig','e_salary','e_id'].forEach(i=>$(i).value='');$('e_join').value=today()}
+async function renderEmployees(){let a=await getAll('employees');let q=($('e_search').value||'').toLowerCase();a=a.filter(x=>(x.name||'').toLowerCase().includes(q));
+$('empTable').innerHTML=a.map(x=>`<tr><td>${x.name}</td><td>${x.contact||''}</td><td>${x.desig||''}</td><td>${money(x.salary)}</td><td>${money(x.adv||0)}</td><td>${x.status}</td><td><div class="act"><button class="mini e" onclick="editEmp('${x.id}')">Edit</button><button class="mini d" onclick="delEmp('${x.id}')">Del</button><button class="mini pr" onclick="printEmp('${x.id}')">Print</button></div></td></tr>`).join('')}
+async function editEmp(id){let x=(await getAll('employees')).find(v=>v.id===id);$('e_id').value=x.id;$('e_name').value=x.name;$('e_fname').value=x.fname||'';$('e_cnic').value=x.cnic||'';$('e_contact').value=x.contact||'';$('e_addr').value=x.addr||'';$('e_join').value=x.join;$('e_desig').value=x.desig||'';$('e_salary').value=x.salary;$('e_status').value=x.status}
+async function delEmp(id){if(!canWrite())return;if(!confirm('Delete employee?'))return;await delRec('employees',id);renderEmployees()}
+async function fillSalEmp(){let id=$('sl_emp').value;if(!id)return;let e=(await getAll('employees')).find(x=>x.id===id);$('sl_msalary').value=e.salary;$('sl_total').value=e.salary;$('sl_prev').value=e.adv||0;calcSal()}
+function calcSal(){let t=Number($('sl_total').value||0),tk=Number($('sl_taken').value||0),rt=Number($('sl_ret').value||0),pv=Number($('sl_prev').value||0),pd=Number($('sl_paid').value||0);$('sl_remAdv').value=pv+tk-rt;$('sl_remSal').value=t-pd}
+async function saveSalary(){if(!canWrite())return;let eid=$('sl_emp').value;if(!eid){toast('Select employee');return}calcSal();
+let emps=await getAll('employees');let emp=emps.find(x=>x.id===eid);
+let o={id:$('sl_id').value||uid(),empId:eid,ename:emp.name,month:$('sl_month').value,msalary:Number($('sl_msalary').value||0),total:Number($('sl_total').value||0),taken:Number($('sl_taken').value||0),ret:Number($('sl_ret').value||0),prev:Number($('sl_prev').value||0),remAdv:Number($('sl_remAdv').value||0),paid:Number($('sl_paid').value||0),remSal:Number($('sl_remSal').value||0),date:$('sl_date').value||today()};
+if($('sl_id').value)await putRec('salary',o);else await addRec('salary',o);
+emp.adv=o.remAdv;await putRec('employees',emp);resetSalary();renderSalary();renderEmployees();toast('Salary saved. Advance correctly adjusted, not double expense.')}
+function resetSalary(){['sl_total','sl_taken','sl_ret','sl_prev','sl_remAdv','sl_paid','sl_remSal','sl_id'].forEach(i=>$(i).value='');$('sl_taken').value=0;$('sl_ret').value=0;$('sl_paid').value=0;$('sl_date').value=today()}
+async function renderSalary(){let a=await getAll('salary');$('salTable').innerHTML=a.map(x=>`<tr><td>${x.month}</td><td>${x.ename}</td><td>${money(x.total)}</td><td>${money(x.taken)}</td><td>${money(x.ret)}</td><td>${money(x.remAdv)}</td><td>${money(x.paid)}</td><td>${money(x.remSal)}</td><td><div class="act"><button class="mini pr" onclick="printSlip('${x.id}')">Slip</button><button class="mini d" onclick="delSalary('${x.id}')">Del</button></div></td></tr>`).join('')}
+async function delSalary(id){if(!canWrite())return;if(!confirm('Delete salary record?'))return;await delRec('salary',id);renderSalary()}
+/* BANKING */
+async function saveBank(){if(!canWrite())return;let n=$('b_name').value.trim();if(!n){toast('Bank name required');return}
+let o={id:$('b_id').value||uid(),bank:n,title:$('b_title').value,accNo:$('b_no').value,iban:$('b_iban').value,branch:$('b_branch').value,opening:Number($('b_open').value||0)};
+if($('b_id').value){let old=(await getAll('banks')).find(x=>x.id===$('b_id').value);o.balance=old.balance;await putRec('banks',o)}else{o.balance=o.opening;await addRec('banks',o)}
+resetBank();renderBanks();refreshDropdowns();loadDashboard()}
+function resetBank(){['b_name','b_title','b_no','b_iban','b_branch','b_open','b_id'].forEach(i=>$(i).value='');$('b_open').value=0}
+async function renderBanks(){let a=await getAll('banks');let tot=a.reduce((s,x)=>s+Number(x.balance!=null?x.balance:x.opening||0),0);$('bankTotal').innerText=money(tot);
+$('bankTable').innerHTML=a.map(x=>`<tr><td>${x.bank}</td><td>${x.title}</td><td>${x.accNo}</td><td>${x.branch||''}</td><td>${money(x.balance!=null?x.balance:x.opening)}</td><td><div class="act"><button class="mini e" onclick="editBank('${x.id}')">Edit</button><button class="mini d" onclick="delBank('${x.id}')">Del</button></div></td></tr>`).join('')}
+async function editBank(id){let x=(await getAll('banks')).find(v=>v.id===id);$('b_id').value=x.id;$('b_name').value=x.bank;$('b_title').value=x.title;$('b_no').value=x.accNo;$('b_iban').value=x.iban||'';$('b_branch').value=x.branch||'';$('b_open').value=x.opening}
+async function delBank(id){if(!canWrite())return;if(!confirm('Delete bank?'))return;await delRec('banks',id);renderBanks()}
+async function bankAuto(bankId,date,type,ref,desc,debit,credit){let b=(await getAll('banks')).find(x=>x.id===bankId);if(!b)return;let bal=Number(b.balance!=null?b.balance:b.opening||0);bal+=Number(credit||0)-Number(debit||0);b.balance=bal;await putRec('banks',b);await addRec('bankTx',{bankId,bank:b.bank+'-'+b.accNo,date,type,ref,desc,debit:Number(debit||0),credit:Number(credit||0),bal});renderBanks();renderBankTx()}
+async function saveBankTx(){if(!canWrite())return;let bid=$('bt_bank').value;if(!bid){toast('Select bank');return}
+let d=Number($('bt_debit').value||0),c=Number($('bt_credit').value||0);await bankAuto(bid,$('bt_date').value||today(),$('bt_type').value,$('bt_ref').value,$('bt_desc').value,d,c);resetBankTx();loadDashboard();toast('Bank transaction saved')}
+function resetBankTx(){['bt_ref','bt_desc','bt_id'].forEach(i=>$(i).value='');$('bt_debit').value=0;$('bt_credit').value=0;$('bt_date').value=today()}
+async function renderBankTx(){let a=await getAll('bankTx');let fb=$('bt_fbank').value,f1=$('bt_f1').value,f2=$('bt_f2').value;a=a.filter(x=>(!fb||x.bankId===fb)&&(!f1||x.date>=f1)&&(!f2||x.date<=f2)).sort((x,y)=>(y.date||'').localeCompare(x.date||''));
+$('bankTxTable').innerHTML=a.map(x=>`<tr><td>${x.date}</td><td>${x.bank}</td><td>${x.type}</td><td>${x.ref||''}</td><td>${x.desc||''}</td><td>${money(x.debit)}</td><td>${money(x.credit)}</td><td>${money(x.bal)}</td><td><button class="mini d" onclick="delBankTx('${x.id}')">Del</button></td></tr>`).join('')}
+async function delBankTx(id){if(!canWrite())return;if(!confirm('Delete tx? Balance not auto-reversed, adjust manually.'))return;await delRec('bankTx',id);renderBankTx()}
+/* FILES */
+async function saveFile(){if(!canWrite())return;let fn=$('f_no').value.trim();if(!fn){toast('File number required');return}
+let all=await getAll('files');let eid=$('f_id').value;let old=eid?all.find(x=>x.id===eid):null;
+let o={id:eid||uid(),no:fn,vname:$('f_vname').value,reg:$('f_reg').value,chas:$('f_chas').value,eng:$('f_eng').value,from:$('f_from').value,rparty:$('f_rparty').value,rdate:$('f_rdate').value,given:$('f_given').value,gparty:$('f_gparty').value,gdate:$('f_gdate').value,loc:$('f_loc').value,status:$('f_status').value,rem:$('f_rem').value,hist:old?old.hist||[]:[]};
+o.hist.push({d:today(),s:o.status,from:o.from,to:o.given,loc:o.loc});
+if(eid)await putRec('files',o);else await addRec('files',o);resetFile();renderFiles();toast('File record saved')}
+function resetFile(){['f_no','f_vname','f_reg','f_chas','f_eng','f_from','f_rparty','f_given','f_gparty','f_loc','f_rem','f_id'].forEach(i=>$(i).value='');$('f_rdate').value=today();$('f_gdate').value=today()}
+async function renderFiles(){let a=await getAll('files');let q=($('f_search').value||'').toLowerCase();a=a.filter(x=>(x.no||'').toLowerCase().includes(q)||(x.reg||'').toLowerCase().includes(q)||(x.chas||'').toLowerCase().includes(q));
+$('fileTable').innerHTML=a.map(x=>`<tr><td>${x.no}</td><td>${x.vname||''}</td><td>${x.reg||''}</td><td>${x.chas||''}</td><td>${x.from||''}</td><td>${x.given||''}</td><td>${x.status}</td><td><div class="act"><button class="mini e" onclick="editFile('${x.id}')">Edit</button><button class="mini d" onclick="delFile('${x.id}')">Del</button><button class="mini vi" onclick="fileHist('${x.id}')">History</button></div></td></tr>`).join('')}
+async function editFile(id){let x=(await getAll('files')).find(v=>v.id===id);$('f_id').value=x.id;$('f_no').value=x.no;$('f_vname').value=x.vname||'';$('f_reg').value=x.reg||'';$('f_chas').value=x.chas||'';$('f_eng').value=x.eng||'';$('f_from').value=x.from||'';$('f_rparty').value=x.rparty||'';$('f_rdate').value=x.rdate||today();$('f_given').value=x.given||'';$('f_gparty').value=x.gparty||'';$('f_gdate').value=x.gdate||today();$('f_loc').value=x.loc||'';$('f_status').value=x.status;$('f_rem').value=x.rem||''}
+async function delFile(id){if(!canWrite())return;if(!confirm('Delete?'))return;await delRec('files',id);renderFiles()}
+async function fileHist(id){let x=(await getAll('files')).find(v=>v.id===id);let h=`<h3>File Movement: ${x.no}</h3><div class="tblwrap"><table><thead><tr><th>Date</th><th>Status</th><th>From</th><th>To</th><th>Location</th></tr></thead><tbody>${(x.hist||[]).map(e=>`<tr><td>${e.d}</td><td>${e.s}</td><td>${e.from||''}</td><td>${e.to||''}</td><td>${e.loc||''}</td></tr>`).join('')}</tbody></table></div>`;$('fileHist').innerHTML=h;$('modal-content').innerHTML=h;$('modal').style.display='flex'}
+/* REPORTS */
+async function genReport(){let t=$('r_type').value,f1=$('r_f1').value,f2=$('r_f2').value,q=($('r_search').value||'').toLowerCase();
+let inR=d=>(!f1||d>=f1)&&(!f2||d<=f2);let html='';
+if(t==='purchase'){let a=(await getAll('purchases')).filter(x=>inR(x.date||''));if(q)a=a.filter(x=>JSON.stringify(x).toLowerCase().includes(q));let tot=a.reduce((s,x)=>s+Number(x.total||0),0);html=`<h3>Purchase Report (${a.length}) Total: ${money(tot)}</h3><table><thead><tr><th>Date</th><th>Vehicle</th><th>Reg</th><th>Chassis</th><th>Vendor</th><th>Vehicle Type</th><th>Grade</th><th>Total</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.date}</td><td>${x.name}</td><td>${x.reg}</td><td>${x.chassis}</td><td>${x.vname}</td><td>${x.vehicleType||''}</td><td>${x.grade||''}</td><td>${x.total}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='sales'){let a=(await getAll('sales')).filter(x=>inR(x.date));if(q)a=a.filter(x=>JSON.stringify(x).toLowerCase().includes(q));let tot=a.reduce((s,x)=>s+Number(x.price||0),0);html=`<h3>Sales Report (${a.length}) Total: ${money(tot)}</h3><table><thead><tr><th>Date</th><th>Vehicle</th><th>Reg</th><th>Buyer</th><th>Vehicle Type</th><th>Grade</th><th>Price</th><th>Recv</th><th>Rem</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.date}</td><td>${x.vname}</td><td>${x.reg}</td><td>${x.cname}</td><td>${x.vehicleType||''}</td><td>${x.grade||''}</td><td>${x.price}</td><td>${x.recv}</td><td>${x.rem}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='stock'){let a=await getAll('purchases');html=`<h3>Stock Report</h3><table><thead><tr><th>Vehicle</th><th>Reg</th><th>Chassis</th><th>Vehicle Type</th><th>Grade</th><th>Price</th><th>Status</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.name}</td><td>${x.reg}</td><td>${x.chassis}</td><td>${x.vehicleType||''}</td><td>${x.grade||''}</td><td>${x.total}</td><td>${x.stock}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='vendor'){let a=await getAll('vendors');html=`<h3>Vendor Report</h3><table><thead><tr><th>Name</th><th>CNIC</th><th>Contact</th><th>City</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.name}</td><td>${x.cnic}</td><td>${x.contact}</td><td>${x.city}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='customer'){let a=await getAll('customers');html=`<h3>Customer Report</h3><table><thead><tr><th>Name</th><th>CNIC</th><th>Contact</th><th>City</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.name}</td><td>${x.cnic}</td><td>${x.contact}</td><td>${x.city}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='expense'){let a=(await getAll('expenses')).filter(x=>inR(x.date));let tot=a.reduce((s,x)=>s+Number(x.amount||0),0);html=`<h3>Expense Report Total: ${money(tot)}</h3><table><thead><tr><th>Date</th><th>Cat</th><th>Desc</th><th>Vehicle</th><th>Amt</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.date}</td><td>${x.cat}</td><td>${x.desc}</td><td>${x.reg||''}</td><td>${x.amount}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='salary'){let a=await getAll('salary');html=`<h3>Salary Report</h3><table><thead><tr><th>Month</th><th>Emp</th><th>Total</th><th>Paid</th><th>RemAdv</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.month}</td><td>${x.ename}</td><td>${x.total}</td><td>${x.paid}</td><td>${x.remAdv}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='bank'){let a=(await getAll('bankTx')).filter(x=>inR(x.date));html=`<h3>Bank Statement</h3><table><thead><tr><th>Date</th><th>Bank</th><th>Type</th><th>Debit</th><th>Credit</th><th>Bal</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.date}</td><td>${x.bank}</td><td>${x.type}</td><td>${x.debit}</td><td>${x.credit}</td><td>${x.bal}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='voucher'){let a=(await getAll('vouchers')).filter(x=>inR(x.date));html=`<h3>Voucher Report</h3><table><thead><tr><th>No</th><th>Date</th><th>Party</th><th>Type</th><th>Amt</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.no}</td><td>${x.date}</td><td>${x.party}</td><td>${x.type}</td><td>${x.amount}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='file'){let a=await getAll('files');html=`<h3>File Report</h3><table><thead><tr><th>FileNo</th><th>Vehicle</th><th>Reg</th><th>Status</th><th>Location</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.no}</td><td>${x.vname}</td><td>${x.reg}</td><td>${x.status}</td><td>${x.loc}</td></tr>`).join('')}</tbody></table>`}
+else if(t==='profit'){let p=await getAll('purchases'),s=await getAll('sales'),ex=await getAll('expenses');let rows=s.filter(x=>inR(x.date)).map(sl=>{let pu=p.find(v=>v.chassis===sl.chassis);let pc=pu?Number(pu.total||0):0;let exc=ex.filter(e=>e.chas===sl.chassis||e.reg===sl.reg).reduce((a,e)=>a+Number(e.amount||0),0);let prof=Number(sl.price||0)-pc-exc;return `<tr><td>${sl.date}</td><td>${sl.vname} ${sl.reg}</td><td>${pc+exc}</td><td>${sl.price}</td><td><b>${prof}</b></td></tr>`});html=`<h3>Vehicle Profit Report (Cost+Vehicle Expenses vs Sale)</h3><table><thead><tr><th>Date</th><th>Vehicle</th><th>Total Cost</th><th>Sale</th><th>Profit</th></tr></thead><tbody>${rows.join('')}</tbody></table>`}
+else if(t==='pnl'){let p=await getAll('purchases'),s=(await getAll('sales')).filter(x=>inR(x.date)),ex=(await getAll('expenses')).filter(x=>inR(x.date));let tS=s.reduce((a,x)=>a+Number(x.price||0),0);let ch=new Set(s.map(x=>x.chassis));let cogs=p.filter(x=>ch.has(x.chassis)).reduce((a,x)=>a+Number(x.total||0),0);let tE=ex.reduce((a,x)=>a+Number(x.amount||0),0);html=`<h3>Overall Profit & Loss ${f1||''} to ${f2||''}</h3><table><tr><th>Total Sales</th><td>${money(tS)}</td></tr><tr><th>Cost of Sold Vehicles</th><td>${money(cogs)}</td></tr><tr><th>Total Expenses</th><td>${money(tE)}</td></tr><tr><th>Net Profit</th><td><b>${money(tS-cogs-tE)}</b></td></tr></table>`}
+$('reportOut').innerHTML=html}
+function printReport(){doPrint(`<div class="r-doc">${$('reportOut').innerHTML}</div>`)}
+function exportCSV(){let tbl=$('reportOut').querySelector('table');if(!tbl){toast('No report');return}let rows=[...tbl.querySelectorAll('tr')].map(r=>[...r.querySelectorAll('th,td')].map(c=>'"'+(c.innerText||'').replace(/"/g,'""')+'"').join(','));let blob=new Blob([rows.join('\n')],{type:'text/csv'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hafiz-report.csv';a.click()}
+/* SETTINGS + BACKUP + USERS */
+async function saveSettings(){if(!isAdmin()&&curUser.role!=='Manager'){toast('Admin/Manager only');return}
+SET.name=$('set_name').value;SET.addr=$('set_addr').value;SET.contact=$('set_contact').value;SET.email=$('set_email').value;SET.cur=$('set_cur').value;SET.format=$('set_format').value;SET.paper=$('set_paper').value;
+let f=$('set_logo').files[0];if(f){let r=new FileReader();r.onload=async()=>{SET.logo=r.result;await putRec('settings',Object.assign({id:'main'},SET));applySet();toast('Settings + Logo saved')};r.readAsDataURL(f)}else{await putRec('settings',Object.assign({id:'main'},SET));applySet();toast('Settings saved')}}
+async function backupNow(){await exportDB()}
+async function exportDB(){let o={};for(let s of STORES)o[s]=await getAll(s);o._date=new Date().toLocaleString();o._ver=1;let blob=new Blob([JSON.stringify(o)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='HAFIZ-MOTORS-BACKUP-'+new Date().toISOString().slice(0,10)+'.json';a.click();localStorage.setItem('hm_last',o._date);$('set_backup').innerText=o._date;toast('Backup downloaded - save to USB')}
+async function importDB(inp){if(!confirm('Restore will merge/replace data. Continue? Take backup first!'))return;let f=inp.files[0];if(!f)return;let t=await f.text();try{let o=JSON.parse(t);for(let s of STORES){if(o[s])for(let r of o[s])await putRec(s,r)}await seed();applySet();refreshDropdowns();renderAll();loadDashboard();toast('Restore completed')}catch(e){alert('Invalid backup file')}}
+async function saveUser(){if(!isAdmin()){toast('Admin only');return}let n=$('u_name').value.trim(),p=$('u_pass').value;if(!n||!p){toast('Username+Password required');return}
+let o={id:$('u_id').value||uid(),username:n,password:p,role:$('u_role').value};if($('u_id').value)await putRec('users',o);else await addRec('users',o);$('u_name').value='';$('u_pass').value='';$('u_id').value='';renderUsers()}
+async function renderUsers(){let a=await getAll('users');$('userTable').innerHTML=a.map(x=>`<tr><td>${x.username}</td><td>${x.role}</td><td><button class="mini d" onclick="delUser('${x.id}')">Del</button></td></tr>`).join('')}
+async function delUser(id){if(!isAdmin())return;if(!confirm('Delete user?'))return;await delRec('users',id);renderUsers()}
+/* PRINTING - RECEIPT ONLY */
+function hdr(title,no,date,ttype){let logo=SET.logo?`<img src="${SET.logo}" style="max-height:60px">`:`<div style="font-size:36px;font-weight:900;color:#0b4da2">HM</div>`;return `<div class="r-doc ${SET.paper==='thermal'?'thermal':''}"><div class="r-head">${logo}<h1>${SET.name}</h1><p>${SET.addr||''} | Ph: ${SET.contact||''} | ${SET.email||''}</p></div><div class="r-title">${title}</div><table class="r-table"><tr><th>Receipt No</th><td>${no}</td><th>Date</th><td>${date}</td><th>Transaction Type</th><td>${ttype}</td></tr></table>`}
+function ftr(){return `<div class="r-sign"><div>Prepared By</div><div>Customer Signature</div><div>Authorized Signature & Stamp</div></div><div class="r-foot">Thank you for business with ${SET.name} | Computer Generated Receipt | ${new Date().toLocaleString()}</div></div>`}
+function doPrint(html){$('print-area').innerHTML=html;setTimeout(()=>window.print(),200)}
+function closeModal(){$('modal').style.display='none'}
+function printModal(){doPrint($('modal-content').innerHTML)}
+async function printPurchase(id){let x=(await getAll('purchases')).find(v=>v.id===id);let h=hdr('PURCHASE RECEIPT',x.rcpt,x.date,'Vehicle Purchase')+`<div class="r-sec"><h4>B. Vendor Information</h4><table class="r-table"><tr><th>Name</th><td>${x.vname||''}</td><th>Father</th><td>${x.vfname||''}</td></tr><tr><th>CNIC</th><td>${x.vcnic||''}</td><th>Contact</th><td>${x.vcontact||''}</td></tr><tr><th>Address</th><td>${x.vaddr||''} ${x.vcity||''} ${x.vprov||''}</td><th>Care Of</th><td>${x.vcare||''}</td></tr></table></div><div class="r-sec"><h4>C. Vehicle Information</h4><table class="r-table"><tr><th>Make</th><td>${x.make||''}</td><th>Name</th><td>${x.name}</td><th>Model</th><td>${x.model||''} ${x.year||''}</td></tr><tr><th>Reg No</th><td>${x.reg}</td><th>Chassis</th><td>${x.chassis}</td><th>Engine</th><td>${x.engine||''}</td></tr><tr><th>Color</th><td>${x.color||''}</td><th>Variant</th><td>${x.variant||''}</td><th>Trans/Drive</th><td>${x.trans||''} / ${x.drive||''}</td></tr><tr><th>Fuel</th><td>${x.fuel||''}</td><th>Category</th><td>${x.cat||''}</td><th>Vehicle Type</th><td>${x.vehicleType||''}</td></tr><tr><th>Auction Grade</th><td>${x.grade||''}</td><th>Status</th><td colspan=3>${x.stock}</td></tr></table></div><div class="r-sec"><h4>D. Financial Information</h4><table class="r-table"><tr><th>Vehicle Price</th><td>${money(x.price)}</td><th>Additional</th><td>${money(x.add)}</td></tr><tr><th>Total Amount</th><td><b>${money(x.total)}</b></td><th>Payment Method</th><td>${x.method}</td></tr><tr><th>Paid Amount</th><td>${money(x.paid)}</td><th>Remaining</th><td><b>${money(x.rem)}</b></td></tr><tr><th>Status</th><td>${x.status}</td><th>Remarks</th><td>${x.remarks||''}</td></tr></table></div>`+ftr();$('modal-content').innerHTML=h;$('modal').style.display='flex'}
+async function printSale(id){let x=(await getAll('sales')).find(v=>v.id===id);let h=hdr('SALE RECEIPT',x.rcpt,x.date,'Vehicle Sale')+`<div class="r-sec"><h4>B. Customer Information</h4><table class="r-table"><tr><th>Name</th><td>${x.cname}</td><th>Father</th><td>${x.cfname||''}</td></tr><tr><th>CNIC</th><td>${x.ccnic||''}</td><th>Contact</th><td>${x.ccontact||''}</td></tr><tr><th>Address</th><td>${x.caddr||''} ${x.ccity||''} ${x.cprov||''}</td><th>Care Of</th><td>${x.ccare||''}</td></tr></table></div><div class="r-sec"><h4>C. Vehicle Information</h4><table class="r-table"><tr><th>Make</th><td>${x.make||''}</td><th>Name</th><td>${x.vname}</td><th>Model</th><td>${x.model||''} ${x.year||''}</td></tr><tr><th>Reg No</th><td>${x.reg}</td><th>Chassis</th><td>${x.chassis}</td><th>Engine</th><td>${x.engine||''}</td></tr><tr><th>Color</th><td>${x.color||''}</td><th>Variant</th><td>${x.variant||''}</td><th>Trans/Drive</th><td>${x.trans||''} / ${x.drive||''}</td></tr><tr><th>Vehicle Type</th><td>${x.vehicleType||''}</td><th>Auction Grade</th><td>${x.grade||''}</td></tr></table></div><div class="r-sec"><h4>D. Financial Information</h4><table class="r-table"><tr><th>Sale Price</th><td><b>${money(x.price)}</b></td><th>Payment Method</th><td>${x.method}</td></tr><tr><th>Received</th><td>${money(x.recv)}</td><th>Remaining</th><td><b>${money(x.rem)}</b></td></tr><tr><th>Status</th><td>${x.status}</td><th>Remarks</th><td>${x.remarks||''}</td></tr></table></div>`+ftr();$('modal-content').innerHTML=h;$('modal').style.display='flex'}
+async function printVoucher(id){let x=(await getAll('vouchers')).find(v=>v.id===id);let h=hdr(x.type.toUpperCase(),x.no,x.date,x.type)+`<div class="r-sec"><h4>Voucher Details</h4><table class="r-table"><tr><th>Party Name</th><td>${x.party}</td><th>CNIC/Contact</th><td>${x.cnic||''}</td></tr><tr><th>Amount</th><td><b>${money(x.amount)}</b></td><th>Method</th><td>${x.method}</td></tr><tr><th>Reference</th><td>${x.ref||''}</td><th>Description</th><td>${x.desc||''}</td></tr></table></div>`+ftr();$('modal-content').innerHTML=h;$('modal').style.display='flex'}
+async function printVendor(id){let x=(await getAll('vendors')).find(v=>v.id===id);doPrint(hdr('VENDOR PROFILE',x.cnic||x.id,x.date,'Vendor')+`<div class="r-sec"><table class="r-table"><tr><th>Name</th><td>${x.name}</td><th>Father</th><td>${x.fname||''}</td></tr><tr><th>CNIC</th><td>${x.cnic||''}</td><th>Contact</th><td>${x.contact}</td></tr><tr><th>Address</th><td colspan=3>${x.address||''} ${x.city||''} ${x.prov||''}</td></tr></table></div>`+ftr())}
+async function printVendorList(){let a=await getAll('vendors');doPrint(hdr('VENDOR LIST','ALL',today(),'List')+`<table class="r-table"><tr><th>Name</th><th>CNIC</th><th>Contact</th><th>City</th></tr>${a.map(x=>`<tr><td>${x.name}</td><td>${x.cnic||''}</td><td>${x.contact}</td><td>${x.city||''}</td></tr>`).join('')}</table>`+ftr())}
+async function printCustomer(id){let x=(await getAll('customers')).find(v=>v.id===id);doPrint(hdr('CUSTOMER PROFILE',x.cnic||x.id,x.date,'Customer')+`<div class="r-sec"><table class="r-table"><tr><th>Name</th><td>${x.name}</td><th>Father</th><td>${x.fname||''}</td></tr><tr><th>CNIC</th><td>${x.cnic||''}</td><th>Contact</th><td>${x.contact}</td></tr></table></div>`+ftr())}
+async function printCustomerList(){let a=await getAll('customers');doPrint(hdr('CUSTOMER LIST','ALL',today(),'List')+`<table class="r-table"><tr><th>Name</th><th>CNIC</th><th>Contact</th></tr>${a.map(x=>`<tr><td>${x.name}</td><td>${x.cnic||''}</td><td>${x.contact}</td></tr>`).join('')}</table>`+ftr())}
+async function printStock(){let a=await getAll('purchases');doPrint(hdr('STOCK REPORT','ALL',today(),'Stock')+`<table class="r-table"><tr><th>Vehicle</th><th>Reg</th><th>Chassis</th><th>Price</th><th>Status</th></tr>${a.map(x=>`<tr><td>${x.name}</td><td>${x.reg}</td><td>${x.chassis}</td><td>${x.total}</td><td>${x.stock}</td></tr>`).join('')}</table>`+ftr())}
+async function printEmp(id){let x=(await getAll('employees')).find(v=>v.id===id);doPrint(hdr('EMPLOYEE PROFILE',x.cnic||x.id,x.join,'Employee')+`<div class="r-sec"><table class="r-table"><tr><th>Name</th><td>${x.name}</td><th>Designation</th><td>${x.desig||''}</td></tr><tr><th>Salary</th><td>${money(x.salary)}</td><th>Advance Due</th><td>${money(x.adv||0)}</td></tr></table></div>`+ftr())}
+async function printEmpList(){let a=await getAll('employees');doPrint(hdr('EMPLOYEE LIST','ALL',today(),'List')+`<table class="r-table"><tr><th>Name</th><th>Desig</th><th>Salary</th></tr>${a.map(x=>`<tr><td>${x.name}</td><td>${x.desig||''}</td><td>${x.salary}</td></tr>`).join('')}</table>`+ftr())}
+async function printSlip(id){let x=(await getAll('salary')).find(v=>v.id===id);doPrint(hdr('SALARY SLIP',x.month,x.date,'Salary')+`<div class="r-sec"><table class="r-table"><tr><th>Employee</th><td>${x.ename}</td><th>Month</th><td>${x.month}</td></tr><tr><th>Total Salary</th><td>${money(x.total)}</td><th>Salary Paid</th><td>${money(x.paid)}</td></tr><tr><th>Advance Taken</th><td>${money(x.taken)}</td><th>Advance Returned</th><td>${money(x.ret)}</td></tr><tr><th>Remaining Advance</th><td>${money(x.remAdv)}</td><th>Remaining Salary</th><td>${money(x.remSal)}</td></tr></table><p style="font-size:11px;padding:6px">Note: Advance is adjusted, not double expense. Returned advance reduces outstanding.</p></div>`+ftr())}
+async function printBankStmt(){let a=await getAll('bankTx');doPrint(hdr('BANK STATEMENT','ALL',today(),'Bank')+`<table class="r-table"><tr><th>Date</th><th>Bank</th><th>Type</th><th>Debit</th><th>Credit</th><th>Bal</th></tr>${a.map(x=>`<tr><td>${x.date}</td><td>${x.bank}</td><td>${x.type}</td><td>${x.debit}</td><td>${x.credit}</td><td>${x.bal}</td></tr>`).join('')}</table>`+ftr())}
+window.onload=async()=>{await openDB();await seed();$('lg_user').focus()};
+</script>
+</body>
+</html>
+```
